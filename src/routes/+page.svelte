@@ -131,11 +131,11 @@
 				<button 
 					type="button" 
 					onclick={() => activeTab = 'chamados'}
-					class="relative px-3.5 sm:px-4 py-1.5 font-bold text-xs sm:text-sm uppercase tracking-wider rounded-sm transition-all duration-150 flex items-center gap-1.5 select-none active:scale-95 cursor-pointer {activeTab === 'chamados' ? 'bg-amber-100 text-stone-900 shadow-md border-b-3 border-amber-500 -rotate-1 font-extrabold scale-105' : 'bg-stone-900/40 text-amber-100/90 hover:bg-stone-900/60'}"
+					class="relative px-3.5 sm:px-4 py-1.5 font-bold text-xs sm:text-sm uppercase tracking-wider rounded-sm transition-all duration-150 flex items-center gap-1.5 select-none active:scale-95 cursor-pointer {activeTab === 'chamados' ? 'bg-amber-100 text-stone-950 shadow-md border-b-3 border-amber-500 -rotate-1 font-black scale-105' : 'bg-amber-100/70 text-stone-900 hover:bg-amber-100 border border-stone-400/40'}"
 				>
 					<ShieldAlert class="w-4 h-4 text-rose-600" />
 					<span>Chamados</span>
-					<span class="text-[10px] px-1.5 py-0.2 rounded-full {activeTab === 'chamados' ? 'bg-amber-800 text-amber-100 font-mono font-bold' : 'bg-white/20 text-white font-mono'}">
+					<span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono font-bold {activeTab === 'chamados' ? 'bg-amber-300 text-stone-950 border border-amber-500' : 'bg-black/15 text-stone-950'}">
 						{activeCaravanasCount}
 					</span>
 				</button>
@@ -143,11 +143,11 @@
 				<button 
 					type="button" 
 					onclick={() => activeTab = 'toolbox'}
-					class="relative px-3.5 sm:px-4 py-1.5 font-bold text-xs sm:text-sm uppercase tracking-wider rounded-sm transition-all duration-150 flex items-center gap-1.5 select-none active:scale-95 cursor-pointer {activeTab === 'toolbox' ? 'bg-sky-100 text-stone-900 shadow-md border-b-3 border-sky-500 rotate-1 font-extrabold scale-105' : 'bg-stone-900/40 text-amber-100/90 hover:bg-stone-900/60'}"
+					class="relative px-3.5 sm:px-4 py-1.5 font-bold text-xs sm:text-sm uppercase tracking-wider rounded-sm transition-all duration-150 flex items-center gap-1.5 select-none active:scale-95 cursor-pointer {activeTab === 'toolbox' ? 'bg-sky-100 text-stone-950 shadow-md border-b-3 border-sky-500 rotate-1 font-black scale-105' : 'bg-sky-100/70 text-stone-900 hover:bg-sky-100 border border-stone-400/40'}"
 				>
 					<Toolbox class="w-4 h-4 text-sky-700" />
 					<span>Toolbox</span>
-					<span class="text-[10px] px-1.5 py-0.2 rounded-full {activeTab === 'toolbox' ? 'bg-sky-800 text-sky-100 font-mono font-bold' : 'bg-white/20 text-white font-mono'}">
+					<span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono font-bold {activeTab === 'toolbox' ? 'bg-sky-300 text-stone-950 border border-sky-400' : 'bg-black/15 text-stone-950'}">
 						{toolboxTotalCount}
 					</span>
 				</button>
@@ -155,11 +155,11 @@
 				<button 
 					type="button" 
 					onclick={() => activeTab = 'avisos'}
-					class="relative px-3.5 sm:px-4 py-1.5 font-bold text-xs sm:text-sm uppercase tracking-wider rounded-sm transition-all duration-150 flex items-center gap-1.5 select-none active:scale-95 cursor-pointer {activeTab === 'avisos' ? 'bg-rose-100 text-stone-900 shadow-md border-b-3 border-rose-500 -rotate-1 font-extrabold scale-105' : 'bg-stone-900/40 text-amber-100/90 hover:bg-stone-900/60'}"
+					class="relative px-3.5 sm:px-4 py-1.5 font-bold text-xs sm:text-sm uppercase tracking-wider rounded-sm transition-all duration-150 flex items-center gap-1.5 select-none active:scale-95 cursor-pointer {activeTab === 'avisos' ? 'bg-rose-100 text-stone-950 shadow-md border-b-3 border-rose-500 -rotate-1 font-black scale-105' : 'bg-rose-100/70 text-stone-900 hover:bg-rose-100 border border-stone-400/40'}"
 				>
 					<Megaphone class="w-4 h-4 text-amber-700" />
 					<span>Avisos</span>
-					<span class="text-[10px] px-1.5 py-0.2 rounded-full {activeTab === 'avisos' ? 'bg-rose-800 text-rose-100 font-mono font-bold' : 'bg-white/20 text-white font-mono'}">
+					<span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono font-bold {activeTab === 'avisos' ? 'bg-rose-300 text-stone-950 border border-rose-400' : 'bg-black/15 text-stone-950'}">
 						{activeNoticesCount}
 					</span>
 				</button>
@@ -189,10 +189,10 @@
 				<button 
 					type="button" 
 					onclick={() => isCreateModalOpen = true}
-					class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-md font-extrabold text-xs bg-gradient-to-r from-amber-700 to-amber-900 hover:from-amber-800 hover:to-stone-950 text-amber-50 shadow-md border border-amber-500/40 active:scale-95 transition-all cursor-pointer"
+					class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-md font-black text-xs bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 hover:from-amber-200 hover:to-amber-400 text-stone-950 shadow-md border border-amber-600/70 active:scale-95 transition-all cursor-pointer"
 				>
-					<Plus class="w-4 h-4" />
-					<span>+ Fixar Post-it</span>
+					<Plus class="w-4 h-4 text-stone-950 stroke-[2.5]" />
+					<span>Fixar Post-it</span>
 				</button>
 			</div>
 		</header>
@@ -209,39 +209,39 @@
 					<button 
 						type="button" 
 						onclick={() => chamadosFilter = 'todos'}
-						class="px-2.5 py-1 rounded text-xs font-bold transition-all {chamadosFilter === 'todos' ? 'bg-amber-100 text-stone-900 shadow-xs' : 'text-amber-200/80 hover:bg-black/20'}"
+						class="px-2.5 py-1 rounded text-xs font-bold transition-all cursor-pointer {chamadosFilter === 'todos' ? 'bg-amber-100 text-stone-950 shadow-xs ring-1 ring-amber-900/20' : 'bg-white/80 hover:bg-white text-stone-900 border border-stone-300'}"
 					>
 						Todos
 					</button>
 					<button 
 						type="button" 
 						onclick={() => chamadosFilter = 'caravana'}
-						class="px-2.5 py-1 rounded text-xs font-bold transition-all {chamadosFilter === 'caravana' ? 'bg-amber-100 text-stone-900 shadow-xs' : 'text-amber-200/80 hover:bg-black/20'}"
+						class="px-2.5 py-1 rounded text-xs font-bold transition-all cursor-pointer {chamadosFilter === 'caravana' ? 'bg-amber-100 text-stone-950 shadow-xs ring-1 ring-amber-900/20' : 'bg-white/80 hover:bg-white text-stone-900 border border-stone-300'}"
 					>
 						Caravanas 480
 					</button>
 					<button 
 						type="button" 
 						onclick={() => chamadosFilter = 'squad'}
-						class="px-2.5 py-1 rounded text-xs font-bold transition-all {chamadosFilter === 'squad' ? 'bg-amber-100 text-stone-900 shadow-xs' : 'text-amber-200/80 hover:bg-black/20'}"
+						class="px-2.5 py-1 rounded text-xs font-bold transition-all cursor-pointer {chamadosFilter === 'squad' ? 'bg-amber-100 text-stone-950 shadow-xs ring-1 ring-amber-900/20' : 'bg-white/80 hover:bg-white text-stone-900 border border-stone-300'}"
 					>
 						Squads PI
 					</button>
 					<button 
 						type="button" 
 						onclick={() => chamadosFilter = 'reporte'}
-						class="px-2.5 py-1 rounded text-xs font-bold transition-all {chamadosFilter === 'reporte' ? 'bg-amber-100 text-stone-900 shadow-xs' : 'text-amber-200/80 hover:bg-black/20'}"
+						class="px-2.5 py-1 rounded text-xs font-bold transition-all cursor-pointer {chamadosFilter === 'reporte' ? 'bg-amber-100 text-stone-950 shadow-xs ring-1 ring-amber-900/20' : 'bg-white/80 hover:bg-white text-stone-900 border border-stone-300'}"
 					>
 						Alertas
 					</button>
 					<button 
 						type="button" 
 						onclick={() => chamadosFilter = 'denuncia'}
-						class="px-2.5 py-1 rounded text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer {chamadosFilter === 'denuncia' ? 'bg-amber-100 text-stone-900 shadow-xs' : 'text-amber-200/80 hover:bg-black/20'}"
+						class="px-2.5 py-1 rounded text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer {chamadosFilter === 'denuncia' ? 'bg-amber-100 text-stone-950 shadow-xs ring-1 ring-amber-900/20' : 'bg-white/80 hover:bg-white text-stone-900 border border-stone-300'}"
 					>
-						<CockroachIcon size={14} class={chamadosFilter === 'denuncia' ? 'text-amber-950' : 'text-amber-300'} />
+						<CockroachIcon size={14} class="text-stone-950" />
 						<span>Denúncias</span>
-						<span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono {chamadosFilter === 'denuncia' ? 'bg-rose-900 text-amber-100' : 'bg-white/20 text-white'}">
+						<span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono {chamadosFilter === 'denuncia' ? 'bg-rose-200 text-stone-950 border border-rose-400 font-bold' : 'bg-black/10 text-stone-950'}">
 							{denunciasCount}
 						</span>
 					</button>
@@ -251,22 +251,22 @@
 						<button 
 							type="button" 
 							onclick={() => toolboxFilter = 'todos'}
-							class="px-2.5 py-1 rounded text-xs font-bold transition-all cursor-pointer {toolboxFilter === 'todos' ? 'bg-sky-100 text-stone-900 shadow-xs' : 'text-amber-200/80 hover:bg-black/20'}"
+							class="px-2.5 py-1 rounded text-xs font-bold transition-all cursor-pointer {toolboxFilter === 'todos' ? 'bg-sky-100 text-stone-950 shadow-xs ring-1 ring-sky-900/20' : 'bg-white/80 hover:bg-white text-stone-900 border border-stone-300'}"
 						>
 							Todos
 						</button>
 						<button 
 							type="button" 
 							onclick={() => toolboxFilter = 'ru'}
-							class="px-2.5 py-1 rounded text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer {toolboxFilter === 'ru' ? 'bg-sky-100 text-stone-900 shadow-xs' : 'text-amber-200/80 hover:bg-black/20'}"
+							class="px-2.5 py-1 rounded text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer {toolboxFilter === 'ru' ? 'bg-sky-100 text-stone-950 shadow-xs ring-1 ring-sky-900/20' : 'bg-white/80 hover:bg-white text-stone-900 border border-stone-300'}"
 						>
-							<UtensilsCrossed class="w-3.5 h-3.5 text-amber-500" />
+							<UtensilsCrossed class="w-3.5 h-3.5 text-amber-700" />
 							<span>Fila do RU</span>
 							<span class="text-[10px] px-1.5 py-0.2 rounded font-mono font-black {
-								$ru.currentStatus === 'vazia' ? 'bg-emerald-700 text-emerald-100' :
-								$ru.currentStatus === 'moderada' ? 'bg-amber-700 text-amber-100' :
-								$ru.currentStatus === 'grande' ? 'bg-orange-700 text-orange-100' :
-								'bg-rose-700 text-rose-100'
+								$ru.currentStatus === 'vazia' ? 'bg-emerald-200 text-stone-950 border border-emerald-400' :
+								$ru.currentStatus === 'moderada' ? 'bg-amber-200 text-stone-950 border border-amber-400' :
+								$ru.currentStatus === 'grande' ? 'bg-orange-200 text-stone-950 border border-orange-400' :
+								'bg-rose-200 text-stone-950 border border-rose-400'
 							}">
 								~{$ru.estimatedWaitMinutes}m
 							</span>
@@ -274,10 +274,10 @@
 						<button 
 							type="button" 
 							onclick={() => toolboxFilter = 'onibus'}
-							class="px-2.5 py-1 rounded text-xs font-bold transition-all flex items-center gap-1 cursor-pointer {toolboxFilter === 'onibus' ? 'bg-sky-100 text-stone-900 shadow-xs' : 'text-amber-200/80 hover:bg-black/20'}"
+							class="px-2.5 py-1 rounded text-xs font-bold transition-all flex items-center gap-1 cursor-pointer {toolboxFilter === 'onibus' ? 'bg-sky-100 text-stone-950 shadow-xs ring-1 ring-sky-900/20' : 'bg-white/80 hover:bg-white text-stone-900 border border-stone-300'}"
 						>
 							<span>Ônibus SEMOB</span>
-							<span class="text-[10px] px-1.5 py-0.2 rounded-full bg-white/20 text-white font-mono">
+							<span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono {toolboxFilter === 'onibus' ? 'bg-sky-200 text-stone-950 border border-sky-400 font-bold' : 'bg-black/10 text-stone-950'}">
 								{busesCount}
 							</span>
 						</button>
@@ -289,10 +289,10 @@
 							<button 
 								type="button" 
 								onclick={() => avisosFilter = cat.id}
-								class="px-2.5 py-1 rounded text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer {avisosFilter === cat.id ? 'bg-amber-100 text-stone-900 shadow-xs' : 'text-amber-200/80 hover:bg-black/20'}"
+								class="px-2.5 py-1 rounded text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer {avisosFilter === cat.id ? 'bg-amber-100 text-stone-950 shadow-xs ring-1 ring-amber-900/20' : 'bg-white/80 hover:bg-white text-stone-900 border border-stone-300'}"
 							>
 								<span>{cat.label}</span>
-								<span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono {avisosFilter === cat.id ? 'bg-amber-800 text-amber-100 font-bold' : 'bg-white/20 text-white/90'}">
+								<span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono {avisosFilter === cat.id ? 'bg-amber-300 text-stone-950 font-black border border-amber-400' : 'bg-black/10 text-stone-950'}">
 									{cat.count}
 								</span>
 							</button>
@@ -307,13 +307,13 @@
 					<button
 						type="button"
 						onclick={handleSyncInstagram}
-						class="inline-flex items-center gap-1.5 px-3 py-1 rounded font-bold text-xs bg-gradient-to-r from-amber-700 to-amber-900 hover:from-amber-600 hover:to-amber-800 text-amber-100 border border-amber-500/40 shadow-xs active:scale-95 transition-all cursor-pointer {isSyncing ? 'opacity-75' : ''}"
+						class="inline-flex items-center gap-1.5 px-3 py-1 rounded font-bold text-xs bg-amber-200 hover:bg-amber-300 text-stone-950 border border-amber-500 shadow-xs active:scale-95 transition-all cursor-pointer {isSyncing ? 'opacity-75' : ''}"
 						disabled={isSyncing}
 						title="Sincronizar feeds mais recentes dos Instagrams da UnB e EJs (+15 XP)"
 					>
-						<RefreshCw class="w-3.5 h-3.5 text-amber-300 {isSyncing ? 'animate-spin' : ''}" />
+						<RefreshCw class="w-3.5 h-3.5 text-stone-950 {isSyncing ? 'animate-spin' : ''}" />
 						<span class="hidden sm:inline">{isSyncing ? 'Sincronizando...' : 'Sincronizar Feeds'}</span>
-						<span class="text-[10px] text-amber-300 font-mono bg-amber-950/60 px-1 py-0.2 rounded">+15 XP</span>
+						<span class="text-[10px] text-stone-950 font-mono font-black bg-amber-400 px-1 py-0.2 rounded border border-amber-500">+15 XP</span>
 					</button>
 				</div>
 			{:else}
@@ -340,9 +340,9 @@
 						<button 
 							type="button" 
 							onclick={() => isCreateModalOpen = true}
-							class="px-4 py-2 rounded bg-amber-800 text-amber-50 font-bold text-xs"
+							class="px-4 py-2 rounded bg-amber-300 hover:bg-amber-400 text-stone-950 font-black text-xs border border-amber-500 shadow-sm"
 						>
-							+ Fixar Novo Post-it
+							Fixar Post-it
 						</button>
 					</div>
 				{:else}

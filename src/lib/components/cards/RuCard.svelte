@@ -566,9 +566,9 @@
 							/>
 							<button 
 								type="submit" 
-								class="px-3.5 py-2 rounded bg-amber-800 hover:bg-amber-900 text-amber-50 font-bold text-xs flex items-center gap-1.5 shadow-sm active:scale-95 transition-all cursor-pointer shrink-0"
+								class="px-3.5 py-2 rounded bg-amber-300 hover:bg-amber-400 text-stone-950 font-black text-xs flex items-center gap-1.5 shadow-sm active:scale-95 transition-all cursor-pointer shrink-0 border border-amber-500"
 							>
-								<Send class="w-3.5 h-3.5" />
+								<Send class="w-3.5 h-3.5 text-stone-950" />
 								<span>Enviar (+25 XP)</span>
 							</button>
 						</div>

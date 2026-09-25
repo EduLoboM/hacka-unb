@@ -182,41 +182,41 @@
 						<button 
 							type="button"
 							onclick={() => { postCategory = 'caravana'; selectedColor = 'yellow'; }}
-							class="flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs font-bold border transition-all cursor-pointer {postCategory === 'caravana' ? 'bg-amber-800 text-amber-100 border-amber-900 shadow-xs' : 'bg-white/60 text-stone-800 border-stone-300'}"
+							class="flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs font-bold border transition-all cursor-pointer text-stone-950 {postCategory === 'caravana' ? 'bg-amber-300 border-amber-600 shadow-xs font-black' : 'bg-white/60 hover:bg-white border-stone-300'}"
 						>
-							<Car class="w-4 h-4" />
+							<Car class="w-4 h-4 text-stone-950" />
 							<span>Caravana</span>
 						</button>
 						<button 
 							type="button"
 							onclick={() => { postCategory = 'squad'; selectedColor = 'white'; }}
-							class="flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs font-bold border transition-all cursor-pointer {postCategory === 'squad' ? 'bg-sky-800 text-sky-100 border-sky-900 shadow-xs' : 'bg-white/60 text-stone-800 border-stone-300'}"
+							class="flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs font-bold border transition-all cursor-pointer text-stone-950 {postCategory === 'squad' ? 'bg-sky-200 border-sky-500 shadow-xs font-black' : 'bg-white/60 hover:bg-white border-stone-300'}"
 						>
-							<Users class="w-4 h-4" />
+							<Users class="w-4 h-4 text-stone-950" />
 							<span>Squad PI</span>
 						</button>
 						<button 
 							type="button"
 							onclick={() => { postCategory = 'reporte'; selectedColor = 'pink'; selectedPin = 'red'; }}
-							class="flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs font-bold border transition-all cursor-pointer {postCategory === 'reporte' ? 'bg-rose-800 text-rose-100 border-rose-900 shadow-xs' : 'bg-white/60 text-stone-800 border-stone-300'}"
+							class="flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs font-bold border transition-all cursor-pointer text-stone-950 {postCategory === 'reporte' ? 'bg-rose-200 border-rose-400 shadow-xs font-black' : 'bg-white/60 hover:bg-white border-stone-300'}"
 						>
-							<AlertTriangle class="w-4 h-4" />
+							<AlertTriangle class="w-4 h-4 text-stone-950" />
 							<span>Alerta</span>
 						</button>
 						<button 
 							type="button"
 							onclick={() => { postCategory = 'denuncia'; selectedColor = 'yellow'; selectedPin = 'red'; }}
-							class="flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs font-bold border transition-all cursor-pointer {postCategory === 'denuncia' ? 'bg-amber-950 text-amber-200 border-stone-900 shadow-xs ring-2 ring-red-600/50' : 'bg-white/60 text-stone-800 border-stone-300'}"
+							class="flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs font-bold border transition-all cursor-pointer text-stone-950 {postCategory === 'denuncia' ? 'bg-amber-200 border-amber-600 shadow-xs ring-2 ring-red-600/50 font-black' : 'bg-white/60 hover:bg-white border-stone-300'}"
 						>
-							<CockroachIcon size={16} class={postCategory === 'denuncia' ? 'text-amber-300' : 'text-amber-900'} />
+							<CockroachIcon size={16} class="text-stone-950" />
 							<span>Denúncia</span>
 						</button>
 						<button 
 							type="button"
 							onclick={() => { postCategory = 'aviso'; selectedColor = 'kraft'; }}
-							class="flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs font-bold border transition-all cursor-pointer {postCategory === 'aviso' ? 'bg-amber-950 text-amber-200 border-stone-900 shadow-xs' : 'bg-white/60 text-stone-800 border-stone-300'}"
+							class="flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs font-bold border transition-all cursor-pointer text-stone-950 {postCategory === 'aviso' ? 'bg-amber-200 border-amber-600 shadow-xs font-black' : 'bg-white/60 hover:bg-white border-stone-300'}"
 						>
-							<Bell class="w-4 h-4" />
+							<Bell class="w-4 h-4 text-stone-950" />
 							<span>Aviso</span>
 						</button>
 					</div>
@@ -414,9 +414,9 @@
 					</button>
 					<button 
 						type="submit"
-						class="px-5 py-2.5 rounded-md font-bold text-sm bg-gradient-to-r from-amber-800 to-amber-950 text-amber-50 hover:from-amber-900 hover:to-black shadow-md flex items-center gap-2 active:scale-95 transition-all"
+						class="px-5 py-2.5 rounded-md font-black text-sm bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 hover:from-amber-200 hover:to-amber-400 text-stone-950 border border-amber-600/80 shadow-md flex items-center gap-2 active:scale-95 transition-all cursor-pointer"
 					>
-						<Plus class="w-4 h-4" />
+						<Plus class="w-4 h-4 text-stone-950 stroke-[2.5]" />
 						<span>Espetar no Mural (+60 XP)</span>
 					</button>
 				</div>

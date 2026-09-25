@@ -201,16 +201,16 @@
 						<button 
 							type="button" 
 							onclick={() => { if (isFlipped) toggleFlip(); }}
-							class="px-2.5 py-1 rounded-full text-[11px] font-bold transition-all flex items-center gap-1 {!isFlipped ? 'bg-emerald-600 text-white shadow-xs' : 'text-stone-300 hover:text-white'}"
+							class="px-2.5 py-1 rounded-full text-[11px] font-black transition-all flex items-center gap-1 {!isFlipped ? 'bg-emerald-300 text-stone-950 shadow-xs' : 'text-stone-300 hover:text-white'}"
 						>
 							<span>🪪 Carteirinha</span>
 						</button>
 						<button 
 							type="button" 
 							onclick={() => { if (!isFlipped) toggleFlip(); }}
-							class="px-2.5 py-1 rounded-full text-[11px] font-bold transition-all flex items-center gap-1 {isFlipped ? 'bg-amber-600 text-white shadow-xs' : 'text-stone-300 hover:text-white'}"
+							class="px-2.5 py-1 rounded-full text-[11px] font-black transition-all flex items-center gap-1 {isFlipped ? 'bg-amber-300 text-stone-950 shadow-xs' : 'text-stone-300 hover:text-white'}"
 						>
-							<Award class="w-3 h-3" />
+							<Award class="w-3 h-3 text-stone-950" />
 							<span>Missões & Badges</span>
 						</button>
 					</div>
@@ -371,10 +371,10 @@
 												<button 
 													type="button" 
 													onclick={saveName} 
-													class="p-1 rounded bg-emerald-600 text-white hover:bg-emerald-700"
+													class="p-1 rounded bg-emerald-300 text-stone-950 hover:bg-emerald-400 border border-emerald-600"
 													title="Salvar Nome"
 												>
-													<Check class="w-3.5 h-3.5" />
+													<Check class="w-3.5 h-3.5 text-stone-950" />
 												</button>
 											</div>
 										{:else}
