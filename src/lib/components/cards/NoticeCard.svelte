@@ -64,7 +64,7 @@
 	>
 		<div>
 		<!-- Faixa Superior Gráfica de Pôster / Banner de Divulgação -->
-		<header class="{theme.bannerBg} px-4 py-2.5 pt-3.5 border-b-2 border-black/20 shadow-xs flex items-center justify-between">
+		<header class="{theme.bannerBg} px-4 pt-5 pb-2 border-b-2 border-black/20 shadow-xs flex items-center justify-between">
 			<div class="flex items-center gap-1.5 font-mono text-[10px] font-black uppercase tracking-wider">
 				{#if notice.category === 'Edital'}
 					<FileText class="w-3.5 h-3.5 text-rose-300" />
@@ -135,7 +135,7 @@
 		<button 
 			type="button" 
 			onclick={handleMarkAsRead}
-			class="inline-flex items-center gap-1 px-3 py-1.5 rounded font-bold text-xs transition-all {notice.isRead ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' : 'bg-stone-900 hover:bg-stone-800 text-amber-50 active:scale-95 shadow-xs'}"
+			class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded font-bold text-xs transition-all {notice.isRead ? 'bg-emerald-700 text-white' : 'bg-stone-900 hover:bg-stone-800 text-white active:scale-95 shadow-xs'}"
 			disabled={notice.isRead}
 		>
 			{#if notice.isRead}

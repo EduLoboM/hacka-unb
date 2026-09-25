@@ -1,101 +1,85 @@
 <script lang="ts">
 	interface Props {
-		position?: 'top-center' | 'top-left' | 'top-right' | 'dual';
-		rotation?: string;
+		position?: 'dual' | 'top-center' | 'top-left' | 'top-right';
 		class?: string;
 	}
 
 	let {
 		position = 'dual',
-		rotation,
 		class: customClass = ''
 	}: Props = $props();
+
+	// ID único para gradientes SVG
+	const stapleId = `staple-${Math.random().toString(36).slice(2, 7)}`;
 </script>
 
+{#snippet stapleSvg(rotationClass: string)}
+	<div 
+		class="pointer-events-none select-none {rotationClass}"
+		aria-hidden="true"
+	>
+		<svg 
+			viewBox="0 0 38 10" 
+			class="w-9 h-2.5 overflow-visible"
+			style="filter: drop-shadow(0 1.5px 2px rgba(10, 5, 2, 0.65));"
+			fill="none" 
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<defs>
+				<!-- Gradiente de Aço Galvanizado Realista -->
+				<linearGradient id="{stapleId}-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+					<stop offset="0%" stop-color="#f8fafc" />
+					<stop offset="25%" stop-color="#e2e8f0" />
+					<stop offset="55%" stop-color="#94a3b8" />
+					<stop offset="85%" stop-color="#64748b" />
+					<stop offset="100%" stop-color="#334155" />
+				</linearGradient>
+			</defs>
+
+			<!-- Furos de Penetração no Papel (Onde as pontas do grampo perfuram a folha) -->
+			<rect x="1.5" y="1.5" width="2" height="6.5" rx="0.5" fill="#09090b" opacity="0.9" />
+			<rect x="34.5" y="1.5" width="2" height="6.5" rx="0.5" fill="#09090b" opacity="0.9" />
+
+			<!-- Barra Metálica do Grampo (Arame de Aço Galvanizado) -->
+			<rect 
+				x="2.5" 
+				y="2.5" 
+				width="33" 
+				height="4.5" 
+				rx="1" 
+				fill="url(#{stapleId}-grad)" 
+				stroke="#475569" 
+				stroke-width="0.5" 
+			/>
+
+			<!-- Linha de Brilho Especular Superior do Metal -->
+			<line x1="3.5" y1="3.5" x2="34.5" y2="3.5" stroke="#ffffff" stroke-width="0.8" opacity="0.95" />
+
+			<!-- Linha de Chanfro / Sombra Inferior do Fio -->
+			<line x1="3.5" y1="6.3" x2="34.5" y2="6.3" stroke="#1e293b" stroke-width="0.6" opacity="0.75" />
+		</svg>
+	</div>
+{/snippet}
+
 {#if position === 'dual'}
-	<!-- Dois Grampos: Um no Canto Esquerdo e Outro no Direito (Estilo Grampeador de Mural) -->
-	<div 
-		class="absolute -top-2 left-6 -rotate-12 z-20 pointer-events-none select-none {customClass}"
-		aria-hidden="true"
-	>
-		<div class="relative flex items-center justify-between w-9 h-2.5">
-			<!-- Furo de Perfuração Esquerdo no Papel / Cortiça -->
-			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -mr-1 z-1 shadow-inner"></div>
-
-			<!-- Barra Metálica do Grampo Galvanizado -->
-			<div 
-				class="flex-1 h-1.5 bg-gradient-to-b from-white via-zinc-300 to-zinc-600 rounded-[1px] shadow-[0_2px_4px_rgba(20,10,5,0.5)] border-t border-white border-b border-zinc-800/90 relative z-2"
-			>
-				<!-- Brilho Especular Superior do Arame de Aço -->
-				<div class="absolute inset-x-0 top-0 h-0.5 bg-white/90"></div>
-			</div>
-
-			<!-- Furo de Perfuração Direito no Papel / Cortiça -->
-			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -ml-1 z-1 shadow-inner"></div>
-		</div>
+	<!-- Dois Grampos: Um no Canto Superior Esquerdo e Outro no Direito (Firmemente Grampeados Sobre o Papel) -->
+	<div class="absolute top-2 left-4 z-20 {customClass}">
+		{@render stapleSvg('-rotate-12')}
 	</div>
-
-	<div 
-		class="absolute -top-2 right-6 rotate-8 z-20 pointer-events-none select-none {customClass}"
-		aria-hidden="true"
-	>
-		<div class="relative flex items-center justify-between w-9 h-2.5">
-			<!-- Furo de Perfuração Esquerdo -->
-			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -mr-1 z-1 shadow-inner"></div>
-
-			<!-- Barra Metálica do Grampo Galvanizado -->
-			<div 
-				class="flex-1 h-1.5 bg-gradient-to-b from-white via-zinc-300 to-zinc-600 rounded-[1px] shadow-[0_2px_4px_rgba(20,10,5,0.5)] border-t border-white border-b border-zinc-800/90 relative z-2"
-			>
-				<!-- Brilho Especular Superior -->
-				<div class="absolute inset-x-0 top-0 h-0.5 bg-white/90"></div>
-			</div>
-
-			<!-- Furo de Perfuração Direito -->
-			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -ml-1 z-1 shadow-inner"></div>
-		</div>
+	<div class="absolute top-2 right-4 z-20 {customClass}">
+		{@render stapleSvg('rotate-12')}
 	</div>
-
+{:else if position === 'top-center'}
+	<!-- Grampo Único no Topo Central (Sobre a Faixa de Cabeçalho) -->
+	<div class="absolute top-2 left-1/2 -translate-x-1/2 z-20 {customClass}">
+		{@render stapleSvg('-rotate-1')}
+	</div>
 {:else if position === 'top-left'}
-	<div 
-		class="absolute -top-2 left-6 {rotation ?? '-rotate-12'} z-20 pointer-events-none select-none {customClass}"
-		aria-hidden="true"
-	>
-		<div class="relative flex items-center justify-between w-9 h-2.5">
-			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -mr-1 z-1 shadow-inner"></div>
-			<div class="flex-1 h-1.5 bg-gradient-to-b from-white via-zinc-300 to-zinc-600 rounded-[1px] shadow-[0_2px_4px_rgba(20,10,5,0.5)] border-t border-white border-b border-zinc-800/90 relative z-2">
-				<div class="absolute inset-x-0 top-0 h-0.5 bg-white/90"></div>
-			</div>
-			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -ml-1 z-1 shadow-inner"></div>
-		</div>
+	<div class="absolute top-2 left-4 z-20 {customClass}">
+		{@render stapleSvg('-rotate-12')}
 	</div>
-
 {:else if position === 'top-right'}
-	<div 
-		class="absolute -top-2 right-6 {rotation ?? 'rotate-8'} z-20 pointer-events-none select-none {customClass}"
-		aria-hidden="true"
-	>
-		<div class="relative flex items-center justify-between w-9 h-2.5">
-			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -mr-1 z-1 shadow-inner"></div>
-			<div class="flex-1 h-1.5 bg-gradient-to-b from-white via-zinc-300 to-zinc-600 rounded-[1px] shadow-[0_2px_4px_rgba(20,10,5,0.5)] border-t border-white border-b border-zinc-800/90 relative z-2">
-				<div class="absolute inset-x-0 top-0 h-0.5 bg-white/90"></div>
-			</div>
-			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -ml-1 z-1 shadow-inner"></div>
-		</div>
-	</div>
-
-{:else}
-	<!-- Grampo Único Centralizado no Topo -->
-	<div 
-		class="absolute -top-2 left-1/2 -translate-x-1/2 {rotation ?? '-rotate-1'} z-20 pointer-events-none select-none {customClass}"
-		aria-hidden="true"
-	>
-		<div class="relative flex items-center justify-between w-10 h-2.5">
-			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -mr-1 z-1 shadow-inner"></div>
-			<div class="flex-1 h-1.5 bg-gradient-to-b from-white via-zinc-300 to-zinc-600 rounded-[1px] shadow-[0_2px_4px_rgba(20,10,5,0.5)] border-t border-white border-b border-zinc-800/90 relative z-2">
-				<div class="absolute inset-x-0 top-0 h-0.5 bg-white/90"></div>
-			</div>
-			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -ml-1 z-1 shadow-inner"></div>
-		</div>
+	<div class="absolute top-2 right-4 z-20 {customClass}">
+		{@render stapleSvg('rotate-12')}
 	</div>
 {/if}
