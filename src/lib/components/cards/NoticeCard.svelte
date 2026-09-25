@@ -51,14 +51,18 @@
 	}
 </script>
 
-<!-- Flyer / Pôster Universitário com Faixa Gráfica e Grampo de Mural -->
+<!-- Flyer / Pôster Universitário com Grampos Metálicos Fixando na Cortiça -->
 <article 
-	class="relative group rounded-sm shadow-[0_12px_28px_rgba(40,15,5,0.32)] hover:shadow-[0_18px_36px_rgba(40,15,5,0.42)] transition-all duration-200 bg-[#fffdf8] border-2 border-stone-300 {notice.rotation} transform-gpu hover:-translate-y-1 hover:rotate-0 flex flex-col justify-between overflow-hidden"
+	class="relative {notice.rotation} transform-gpu hover:-translate-y-1 hover:rotate-0 transition-all duration-200"
 >
-	<!-- Grampo Metálico de Grampeador de Mural no Topo -->
-	<Staple orientation="horizontal" />
+	<!-- Grampos Metálicos Galvanizados de Grampeador de Mural (Cantos Superiores) -->
+	<Staple position="dual" />
 
-	<div>
+	<!-- Corpo do Pôster com Faixa Gráfica -->
+	<div 
+		class="relative group rounded-sm shadow-[0_12px_28px_rgba(40,15,5,0.32)] hover:shadow-[0_18px_36px_rgba(40,15,5,0.42)] transition-all duration-200 bg-[#fffdf8] border-2 border-stone-300 flex flex-col justify-between overflow-hidden h-full"
+	>
+		<div>
 		<!-- Faixa Superior Gráfica de Pôster / Banner de Divulgação -->
 		<header class="{theme.bannerBg} px-4 py-2.5 pt-3.5 border-b-2 border-black/20 shadow-xs flex items-center justify-between">
 			<div class="flex items-center gap-1.5 font-mono text-[10px] font-black uppercase tracking-wider">
@@ -142,4 +146,5 @@
 			{/if}
 		</button>
 	</footer>
+	</div>
 </article>

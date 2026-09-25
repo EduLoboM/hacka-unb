@@ -1,39 +1,101 @@
 <script lang="ts">
 	interface Props {
-		orientation?: 'horizontal' | 'diagonal-left' | 'dual';
+		position?: 'top-center' | 'top-left' | 'top-right' | 'dual';
+		rotation?: string;
 		class?: string;
 	}
 
 	let {
-		orientation = 'horizontal',
+		position = 'dual',
+		rotation,
 		class: customClass = ''
 	}: Props = $props();
-
-	const orientationMap = {
-		'horizontal': '-top-1.5 left-1/2 -translate-x-1/2 rotate-0',
-		'diagonal-left': '-top-1 left-3 -rotate-45',
-		'dual': ''
-	};
 </script>
 
-<div 
-	class="absolute z-15 pointer-events-none select-none flex items-center justify-center {orientationMap[orientation]} {customClass}"
-	aria-hidden="true"
->
-	<!-- Grampo Metálico Galvanizado de Grampeador de Mural -->
-	<div class="relative flex items-center justify-between w-6 h-2">
-		<!-- Furo de Perfuração Esquerdo no Papel -->
-		<div class="w-1 h-1.5 rounded-full bg-stone-900/80 blur-[0.3px] -mr-0.5 z-1"></div>
+{#if position === 'dual'}
+	<!-- Dois Grampos: Um no Canto Esquerdo e Outro no Direito (Estilo Grampeador de Mural) -->
+	<div 
+		class="absolute -top-2 left-6 -rotate-12 z-20 pointer-events-none select-none {customClass}"
+		aria-hidden="true"
+	>
+		<div class="relative flex items-center justify-between w-9 h-2.5">
+			<!-- Furo de Perfuração Esquerdo no Papel / Cortiça -->
+			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -mr-1 z-1 shadow-inner"></div>
 
-		<!-- Haste Metálica do Grampo com Relevo e Chanfro -->
-		<div 
-			class="flex-1 h-1 bg-gradient-to-b from-stone-100 via-stone-300 to-stone-600 rounded-xs shadow-[0_1px_2px_rgba(0,0,0,0.6)] border-t border-white/90 border-b border-stone-800/80 relative z-2"
-		>
-			<!-- Linha de Brilho Metálico Especular -->
-			<div class="absolute inset-x-0 top-0 h-0.5 bg-white/70"></div>
+			<!-- Barra Metálica do Grampo Galvanizado -->
+			<div 
+				class="flex-1 h-1.5 bg-gradient-to-b from-white via-zinc-300 to-zinc-600 rounded-[1px] shadow-[0_2px_4px_rgba(20,10,5,0.5)] border-t border-white border-b border-zinc-800/90 relative z-2"
+			>
+				<!-- Brilho Especular Superior do Arame de Aço -->
+				<div class="absolute inset-x-0 top-0 h-0.5 bg-white/90"></div>
+			</div>
+
+			<!-- Furo de Perfuração Direito no Papel / Cortiça -->
+			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -ml-1 z-1 shadow-inner"></div>
 		</div>
-
-		<!-- Furo de Perfuração Direito no Papel -->
-		<div class="w-1 h-1.5 rounded-full bg-stone-900/80 blur-[0.3px] -ml-0.5 z-1"></div>
 	</div>
-</div>
+
+	<div 
+		class="absolute -top-2 right-6 rotate-8 z-20 pointer-events-none select-none {customClass}"
+		aria-hidden="true"
+	>
+		<div class="relative flex items-center justify-between w-9 h-2.5">
+			<!-- Furo de Perfuração Esquerdo -->
+			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -mr-1 z-1 shadow-inner"></div>
+
+			<!-- Barra Metálica do Grampo Galvanizado -->
+			<div 
+				class="flex-1 h-1.5 bg-gradient-to-b from-white via-zinc-300 to-zinc-600 rounded-[1px] shadow-[0_2px_4px_rgba(20,10,5,0.5)] border-t border-white border-b border-zinc-800/90 relative z-2"
+			>
+				<!-- Brilho Especular Superior -->
+				<div class="absolute inset-x-0 top-0 h-0.5 bg-white/90"></div>
+			</div>
+
+			<!-- Furo de Perfuração Direito -->
+			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -ml-1 z-1 shadow-inner"></div>
+		</div>
+	</div>
+
+{:else if position === 'top-left'}
+	<div 
+		class="absolute -top-2 left-6 {rotation ?? '-rotate-12'} z-20 pointer-events-none select-none {customClass}"
+		aria-hidden="true"
+	>
+		<div class="relative flex items-center justify-between w-9 h-2.5">
+			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -mr-1 z-1 shadow-inner"></div>
+			<div class="flex-1 h-1.5 bg-gradient-to-b from-white via-zinc-300 to-zinc-600 rounded-[1px] shadow-[0_2px_4px_rgba(20,10,5,0.5)] border-t border-white border-b border-zinc-800/90 relative z-2">
+				<div class="absolute inset-x-0 top-0 h-0.5 bg-white/90"></div>
+			</div>
+			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -ml-1 z-1 shadow-inner"></div>
+		</div>
+	</div>
+
+{:else if position === 'top-right'}
+	<div 
+		class="absolute -top-2 right-6 {rotation ?? 'rotate-8'} z-20 pointer-events-none select-none {customClass}"
+		aria-hidden="true"
+	>
+		<div class="relative flex items-center justify-between w-9 h-2.5">
+			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -mr-1 z-1 shadow-inner"></div>
+			<div class="flex-1 h-1.5 bg-gradient-to-b from-white via-zinc-300 to-zinc-600 rounded-[1px] shadow-[0_2px_4px_rgba(20,10,5,0.5)] border-t border-white border-b border-zinc-800/90 relative z-2">
+				<div class="absolute inset-x-0 top-0 h-0.5 bg-white/90"></div>
+			</div>
+			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -ml-1 z-1 shadow-inner"></div>
+		</div>
+	</div>
+
+{:else}
+	<!-- Grampo Único Centralizado no Topo -->
+	<div 
+		class="absolute -top-2 left-1/2 -translate-x-1/2 {rotation ?? '-rotate-1'} z-20 pointer-events-none select-none {customClass}"
+		aria-hidden="true"
+	>
+		<div class="relative flex items-center justify-between w-10 h-2.5">
+			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -mr-1 z-1 shadow-inner"></div>
+			<div class="flex-1 h-1.5 bg-gradient-to-b from-white via-zinc-300 to-zinc-600 rounded-[1px] shadow-[0_2px_4px_rgba(20,10,5,0.5)] border-t border-white border-b border-zinc-800/90 relative z-2">
+				<div class="absolute inset-x-0 top-0 h-0.5 bg-white/90"></div>
+			</div>
+			<div class="w-1.5 h-2 bg-stone-950/80 rounded-[1px] -ml-1 z-1 shadow-inner"></div>
+		</div>
+	</div>
+{/if}

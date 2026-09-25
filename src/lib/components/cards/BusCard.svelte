@@ -60,19 +60,23 @@
 	}
 </script>
 
-<!-- Tíquete / Bilhete Oficial de Ônibus de Brasília com Picote e Fita Durex -->
+<!-- Tíquete / Bilhete Oficial de Ônibus de Brasília com Fitas Adesivas Translúcidas Fixando na Cortiça -->
 <article 
-	class="relative rounded-sm shadow-[0_10px_25px_rgba(40,20,5,0.35)] hover:shadow-[0_16px_32px_rgba(40,20,5,0.45)] transition-all duration-200 p-5 pt-6 bg-[#fbf9f4] border-2 border-[#d6cbbe] {bus.rotation} transform-gpu hover:-translate-y-1 hover:rotate-0 flex flex-col justify-between overflow-hidden"
+	class="relative {bus.rotation} transform-gpu hover:-translate-y-1 hover:rotate-0 transition-all duration-200"
 >
-	<!-- Fitas Transparentes (Durex) nas Pontas Superiores -->
+	<!-- Fitas Adesivas Transparentes (Durex) Fixando as Pontas do Bilhete na Cortiça -->
 	<ClearTape corner="top-left" />
 	<ClearTape corner="top-right" />
 
-	<!-- Picote Lateral de Bilhete de Transporte (Entalhes semicirculares) -->
-	<div class="absolute top-24 -left-3 w-6 h-6 rounded-full bg-[#c19a6b] shadow-inner pointer-events-none border-r border-[#d6cbbe]"></div>
-	<div class="absolute top-24 -right-3 w-6 h-6 rounded-full bg-[#c19a6b] shadow-inner pointer-events-none border-l border-[#d6cbbe]"></div>
+	<!-- Corpo do Tíquete com Picote e Textura de Papel -->
+	<div 
+		class="relative rounded-sm shadow-[0_10px_25px_rgba(40,20,5,0.35)] hover:shadow-[0_16px_32px_rgba(40,20,5,0.45)] transition-all duration-200 p-5 pt-6 bg-[#fbf9f4] border-2 border-[#d6cbbe] flex flex-col justify-between overflow-hidden h-full"
+	>
+		<!-- Picote Lateral de Bilhete de Transporte (Entalhes semicirculares) -->
+		<div class="absolute top-24 -left-3 w-6 h-6 rounded-full bg-[#c19a6b] shadow-inner pointer-events-none border-r border-[#d6cbbe]"></div>
+		<div class="absolute top-24 -right-3 w-6 h-6 rounded-full bg-[#c19a6b] shadow-inner pointer-events-none border-l border-[#d6cbbe]"></div>
 
-	<div>
+		<div>
 		<!-- Cabeçalho do Tíquete: Número de Série e Tarja SEMOB -->
 		<header class="border-b-2 border-dashed border-stone-400/70 pb-3 mb-3">
 			<div class="flex items-center justify-between text-[10px] font-mono font-bold text-stone-500 uppercase tracking-widest mb-1.5">
@@ -259,4 +263,5 @@
 			</span>
 		</div>
 	</footer>
+	</div>
 </article>
