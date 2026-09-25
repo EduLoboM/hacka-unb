@@ -7,7 +7,11 @@ import type {
 	ToastNotification, 
 	CaravanaPost, 
 	BusReport, 
-	NoticePost 
+	NoticePost,
+	RuReport,
+	RuQueueStatus,
+	RuQueueVoteReport,
+	RuWeekdayMenu
 } from '$lib/types/gamification';
 import { playPinSound, playStampSound, playXpSound, playLevelUpSound } from '$lib/utils/soundEffects';
 
@@ -99,6 +103,18 @@ const INITIAL_QUESTS: Quest[] = [
 		isCompleted: false,
 		icon: '📌',
 		category: 'notice'
+	},
+	{
+		id: 'q4',
+		title: 'Fiscal do Bandejão',
+		description: 'Colabore reportando como está a fila do RU hoje',
+		xpReward: 35,
+		karmaReward: 4,
+		progress: 0,
+		maxProgress: 1,
+		isCompleted: false,
+		icon: '🍽️',
+		category: 'ru'
 	}
 ];
 
@@ -212,6 +228,50 @@ export const INITIAL_CARAVANAS: CaravanaPost[] = [
 		createdAt: 'Há 1h',
 		commentsCount: 3,
 		userJoined: false
+	},
+	{
+		id: 'c5',
+		type: 'denuncia',
+		title: '🪳 Barata no balcão de distribuição de bandejas do RU',
+		description: 'Atenção comunidade FGA: avistada barata grande na calha lateral onde os alunos pegam as bandejas de inox. A fiscalização sanitária da UnB precisa agir urgente!',
+		location: 'Restaurante Universitário • RU FGA',
+		author: {
+			name: 'Lucas Pinheiro',
+			course: 'Engenharia de Software',
+			karma: 85,
+			level: 8,
+			avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100'
+		},
+		urgency: 'emergencia',
+		supportedCount: 54,
+		commentsCount: 19,
+		attendees: [],
+		paperColor: 'yellow',
+		pinColor: 'red',
+		rotation: 'rot-n-1',
+		createdAt: 'Há 25 min'
+	},
+	{
+		id: 'c6',
+		type: 'denuncia',
+		title: '🪳 Insetos e baratas no bebedouro central do UAC',
+		description: 'Não bebam água no bebedouro em frente ao auditório do térreo! Tem baratas saindo da grade do compressor de refrigeração. Já protocolamos reclamação na ouvidoria da UnB.',
+		location: 'UAC • Térreo próximo ao Auditório',
+		author: {
+			name: 'Beatriz Lima',
+			course: 'Engenharia de Energia',
+			karma: 95,
+			level: 9,
+			avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100'
+		},
+		urgency: 'alta',
+		supportedCount: 78,
+		commentsCount: 31,
+		attendees: [],
+		paperColor: 'kraft',
+		pinColor: 'red',
+		rotation: 'rot-p-1',
+		createdAt: 'Há 50 min'
 	}
 ];
 
@@ -227,7 +287,7 @@ export const INITIAL_BUS_LINES: BusReport[] = [
 		farePrice: 'R$ 5,50 (Passe Livre Estudantil)',
 		baseIntervalMinutes: 20,
 		scheduledTrips: ['06:20', '06:50', '07:20', '08:00', '11:30', '12:15', '13:00', '16:40', '17:25', '18:10', '19:00', '21:40', '22:25'],
-		studentTip: 'Malandragem: se for pro Metrô em Taguatinga, pega na parada em frente ao UAC antes das 17h pra ir sentado.',
+		studentTip: 'Se for pro Metrô em Taguatinga, pega na parada em frente ao UAC antes das 17h pra ir sentado.',
 		recentReports: [
 			{ id: 'r0', type: 'passou', timestamp: 'Há 5 min', studentName: 'Henrique M.' },
 			{ id: 'r0b', type: 'lotado', timestamp: 'Há 22 min', studentName: 'Letícia R.' }
@@ -341,16 +401,257 @@ export const INITIAL_BUS_LINES: BusReport[] = [
 	}
 ];
 
-export const INITIAL_NOTICES: NoticePost[] = [
+export const WEEKLY_RU_MENU: RuWeekdayMenu[] = [
 	{
-		id: 'n1',
-		title: 'Processo Seletivo 2026/2 - Orc’sLab Empresa Júnior',
+		dayOfWeek: 1,
+		dayName: 'Segunda-feira',
+		lunch: {
+			mainDish: 'Feijoada Completa Tradicional',
+			veganOption: 'Feijoada Vegana com Tofu Defumado & Cogumelos',
+			garnish: 'Couve Manteiga Refogada no Alho & Farofa Crocante',
+			sideDishes: 'Arroz Branco, Arroz Integral, Laranja Fatiada',
+			salad: 'Vinagrete Especial e Mix de Folhas Verdes',
+			dessert: 'Laranja Higienizada ou Doce de Abóbora Caseiro',
+			drink: 'Suco Natural de Laranja'
+		},
+		dinner: {
+			mainDish: 'Iscas de Frango Grelhado com Ervas Finas',
+			veganOption: 'Quibe Assado de Berinjela com Nozes',
+			garnish: 'Mandioca Cozida na Manteiga de Garrafa',
+			sideDishes: 'Arroz Branco, Integral e Feijão Preto',
+			salad: 'Acelga Crocante, Cenoura e Tomate',
+			dessert: 'Banana Prata ou Gelatina',
+			drink: 'Suco Natural de Uva'
+		}
+	},
+	{
+		dayOfWeek: 2,
+		dayName: 'Terça-feira',
+		lunch: {
+			mainDish: 'Filé de Frango à Parmegiana Gratinado',
+			veganOption: 'Berinjela à Parmegiana com Queijo Vegano',
+			garnish: 'Espaguete ao Alho e Óleo com Ervas',
+			sideDishes: 'Arroz Branco, Integral e Feijão Carioca',
+			salad: 'Alface Americana, Tomate e Rúcula',
+			dessert: 'Maçã Nacional ou Mousse de Limão',
+			drink: 'Suco Natural de Maracujá'
+		},
+		dinner: {
+			mainDish: 'Carne Moída Refogada com Batatas e Cenoura',
+			veganOption: 'Chili Vegano de Feijão Vermelho com Milho',
+			garnish: 'Purê de Batata Cremoso',
+			sideDishes: 'Arroz Branco, Integral e Feijão Carioca',
+			salad: 'Repolho Roxo, Abacaxi e Cenoura Ralada',
+			dessert: 'Melão Fatiado ou Pudim',
+			drink: 'Suco Natural de Goiaba'
+		}
+	},
+	{
+		dayOfWeek: 3,
+		dayName: 'Quarta-feira',
+		lunch: {
+			mainDish: 'Lasanha Tradicional à Bolonhesa',
+			veganOption: 'Lasanha Vegana de Berinjela, Abobrinha e Castanhas',
+			garnish: 'Batata Souté com Salsinha Fresca',
+			sideDishes: 'Arroz Branco, Arroz Integral e Feijão Preto',
+			salad: 'Salada Caprese com Manjericão e Tomate',
+			dessert: 'Melancia Fatiada ou Doce de Leite',
+			drink: 'Suco Natural de Abacaxi com Hortelã'
+		},
+		dinner: {
+			mainDish: 'Cubos de Alcatra ao Molho Madeira',
+			veganOption: 'Moqueca de Palmito e Banana-da-Terra',
+			garnish: 'Polenta Cremosa de Milho',
+			sideDishes: 'Arroz Branco, Integral e Feijão Preto',
+			salad: 'Beterraba Cozida, Pepino e Alface',
+			dessert: 'Laranja ou Gelatina',
+			drink: 'Suco Natural de Manga'
+		}
+	},
+	{
+		dayOfWeek: 4,
+		dayName: 'Quinta-feira',
+		lunch: {
+			mainDish: 'Churrasco Misto na Chapa (Carne Bovina & Linguiça)',
+			veganOption: 'Espeto Vegano de Cogumelos, Pimentões e Tofu',
+			garnish: 'Mandioca Frita Crocante & Farofa de Ovos',
+			sideDishes: 'Arroz Branco, Integral e Feijão Carioca',
+			salad: 'Vinagrete Tradicional, Alface e Tomate',
+			dessert: 'Abacaxi Fatiado com Canela',
+			drink: 'Suco Natural de Caju'
+		},
+		dinner: {
+			mainDish: 'Sobrecoxa de Frango Assada Dourada',
+			veganOption: 'Fricassê de Grão-de-Bico com Creme de Castanhas',
+			garnish: 'Legumes Salteados no Azeite',
+			sideDishes: 'Arroz Branco, Integral e Feijão Carioca',
+			salad: 'Mix de Folhas Verdes e Rabanete',
+			dessert: 'Banana ou Doce de Banana',
+			drink: 'Suco Natural de Acerola'
+		}
+	},
+	{
+		dayOfWeek: 5,
+		dayName: 'Sexta-feira',
+		lunch: {
+			mainDish: 'Strogonoff de Frango Especial com Batata Palha',
+			veganOption: 'Strogonoff Vegano de Grão-de-Bico e Cogumelos',
+			garnish: 'Batata Rústica Assada com Alecrim',
+			sideDishes: 'Arroz Branco, Arroz Integral e Feijão Carioca',
+			salad: 'Mix de Folhas Verdes, Tomate Cereja e Cenoura Ralada',
+			dessert: 'Bombom Especial ou Melancia Fatiada',
+			drink: 'Suco Natural de Maracujá'
+		},
+		dinner: {
+			mainDish: 'Iscas de Carne Aceboladas com Pimentões',
+			veganOption: 'Hambúrguer Artesanal de Lentilha com Molho Barbecue',
+			garnish: 'Purê Cremoso de Mandioquinha',
+			sideDishes: 'Arroz Branco, Integral e Feijão Preto',
+			salad: 'Acelga Crocante e Milho Verde',
+			dessert: 'Laranja Higienizada ou Gelatina',
+			drink: 'Suco Natural de Limão'
+		}
+	}
+];
+
+export function isHypedMeal(dishName: string): { isHyped: boolean; badgeText: string; reason: string } {
+	const lower = dishName.toLowerCase();
+	if (lower.includes('lasanha') || lower.includes('lasha')) {
+		return {
+			isHyped: true,
+			badgeText: '🔥 DIA DE LASANHA • FILA ALTA',
+			reason: 'Prato mais concorrido da UnB! Fila costuma dobrar a rampa rapidamente.'
+		};
+	}
+	if (lower.includes('strogonoff') || lower.includes('estrogonofe')) {
+		return {
+			isHyped: true,
+			badgeText: '🔥 DIA DE STROGONOFF • FILA ALTA',
+			reason: 'Clássico imbatível do RU! Alta demanda em todos os turnos.'
+		};
+	}
+	if (lower.includes('feijoada')) {
+		return {
+			isHyped: true,
+			badgeText: '🔥 DIA DE FEIJOADA • FILA ALTA',
+			reason: 'Almoço muito disputado com tradicional feijoada completa.'
+		};
+	}
+	if (lower.includes('parmegiana')) {
+		return {
+			isHyped: true,
+			badgeText: '⭐ PRATO NOBRE: PARMEGIANA',
+			reason: 'Prato especial gratinado, grande atrativo para os estudantes.'
+		};
+	}
+	if (lower.includes('churrasco')) {
+		return {
+			isHyped: true,
+			badgeText: '⭐ PRATO ESPECIAL: CHURRASCO',
+			reason: 'Grande movimentação e demanda no refeitório.'
+		};
+	}
+	return { isHyped: false, badgeText: '', reason: '' };
+}
+
+export const INITIAL_RU_DATA: RuReport = {
+	id: 'ru-fga-campus',
+	name: 'Restaurante Universitário • RU FGA',
+	campus: 'Campus UnB Gama (FGA)',
+	priceStudent: 'R$ 2,50',
+	priceVisitor: 'R$ 14,30',
+	lunchHours: '11:15 às 14:00',
+	dinnerHours: '17:30 às 20:00',
+	currentStatus: 'grande',
+	estimatedWaitMinutes: 28,
+	lastUpdated: 'Há 3 min',
+	communityVotes: {
+		vazia: 5,
+		moderada: 14,
+		grande: 32,
+		lotada: 19
+	},
+	recentReports: [
+		{
+			id: 'ru-r1',
+			status: 'grande',
+			timestamp: 'Há 3 min',
+			studentName: 'Danilo K.',
+			studentCourse: 'Software',
+			comment: 'Dia de strogonoff é assim mesmo, fila já passou da rampa mas tá andando!',
+			likes: 14
+		},
+		{
+			id: 'ru-r2',
+			status: 'grande',
+			timestamp: 'Há 12 min',
+			studentName: 'Mariana S.',
+			studentCourse: 'Aeroespacial',
+			comment: 'Strogonoff com batata palha tá sensacional hoje! Vale a pena esperar.',
+			likes: 22
+		},
+		{
+			id: 'ru-r3',
+			status: 'moderada',
+			timestamp: 'Há 28 min',
+			studentName: 'Lucas P.',
+			studentCourse: 'Eletrônica',
+			comment: 'Cheguei às 11h20 antes do pico e peguei fila de apenas 10 minutos.',
+			likes: 9
+		},
+		{
+			id: 'ru-r4',
+			status: 'lotada',
+			timestamp: 'Há 45 min',
+			studentName: 'Letícia R.',
+			studentCourse: 'Energia',
+			comment: 'Turmas de Cálculo e Física saíram agora, fila foi bater quase no gramado.',
+			likes: 12
+		}
+	],
+	menu: {
+		dateStr: 'Sexta-feira • Cardápio do Dia',
+		lunch: {
+			mainDish: 'Strogonoff de Frango Especial com Batata Palha',
+			veganOption: 'Strogonoff Vegano de Grão-de-Bico e Cogumelos',
+			garnish: 'Batata Rústica Assada com Alecrim',
+			sideDishes: 'Arroz Branco, Arroz Integral & Feijão Carioca',
+			salad: 'Mix de Folhas Verdes, Tomate Cereja & Cenoura Ralada',
+			dessert: 'Bombom Especial ou Melancia Fatiada',
+			drink: 'Suco Natural de Maracujá'
+		},
+		dinner: {
+			mainDish: 'Iscas de Carne Aceboladas com Pimentões',
+			veganOption: 'Hambúrguer Artesanal de Lentilha com Molho Barbecue',
+			garnish: 'Purê Cremoso de Mandioquinha',
+			sideDishes: 'Arroz Branco, Arroz Integral & Feijão Preto',
+			salad: 'Acelga Crocante e Milho Verde',
+			dessert: 'Laranja Higienizada ou Gelatina',
+			drink: 'Suco Natural de Limão'
+		}
+	},
+	weeklySchedule: WEEKLY_RU_MENU,
+	rotation: 'rot-n-1'
+};
+
+export const INITIAL_NOTICES: NoticePost[] = [
+	// ==========================================
+	// 🚀 EMPRESAS JUNIORES (EJs UNB & FGA)
+	// ==========================================
+	{
+		id: 'ig-orcestragamificacao-ps',
+		title: '🚀 Processo Seletivo Orc’estra 2026/2: Software & Gamificação na FGA',
 		category: 'Empresas Juniores',
-		organizer: 'Orc’sLab Software & Hardware',
-		description: 'Venha construir soluções reais de impacto! Vagas para desenvolvedores full-stack, designers de produto e gestão de projetos. Não precisa de experiência prévia!',
+		organizer: 'Orc’estra Gamificação',
+		description: 'Construa softwares reais com impacto! Vagas em desenvolvimento Full-Stack (Svelte, React, Node), UI/UX gamificado e gestão ágil de projetos. Não exige experiência prévia: venha aprender fazendo no maior ecossistema de software da FGA! Inscrições na bio.',
 		expiresAt: 'Expira em 3 dias',
-		linkUrl: 'https://orcslab.fga.unb.br',
-		tags: ['Software', 'Inovação', 'Carreira'],
+		linkUrl: 'https://www.instagram.com/orcestragamificacao/',
+		instagramHandle: '@orcestragamificacao',
+		instagramUrl: 'https://www.instagram.com/orcestragamificacao/',
+		likesCount: 432,
+		verifiedBadge: true,
+		sourceType: 'instagram',
+		tags: ['#OrcsTrainee', '#SoftwareFGA', '#Gamificacao', '#ProcessoSeletivo'],
 		paperColor: 'yellow',
 		pinColor: 'gold',
 		rotation: 'rot-p-1',
@@ -358,29 +659,262 @@ export const INITIAL_NOTICES: NoticePost[] = [
 		createdAt: 'Há 2h'
 	},
 	{
-		id: 'n2',
-		title: 'Edital de Iniciação Científica (PIBIC/PIBITI) FGA',
-		category: 'Edital',
-		organizer: 'Diretoria de Pesquisa e Pós-Graduação',
-		description: 'Bolsas abertas para projetos nas áreas de Veículos Autônomos, Microeletrônica e Energias Renováveis. CR mínimo 3.0 e plano de trabalho com orientador.',
-		expiresAt: 'Expira em 48h',
-		linkUrl: 'https://unb.br/editais',
-		tags: ['Pesquisa', 'Bolsa', 'PIBIC'],
-		paperColor: 'white',
-		pinColor: 'red',
+		id: 'ig-eletronjun-pcb',
+		title: '⚡ Workshop Hands-on: Projetando sua Primeira PCB no KiCad',
+		category: 'Empresas Juniores',
+		organizer: 'EletronJun Engenharia',
+		description: 'Aprenda do zero como desenhar o esquemático, rotear trilhas e preparar a fabricação física de circuitos impressos com os consultores da EletronJun no LDEL (Laboratório de Desenvolvimento Eletrônico). Vagas limitadas para estudantes da FGA!',
+		expiresAt: 'Sábado no LDEL',
+		linkUrl: 'https://www.instagram.com/eletronjun/',
+		instagramHandle: '@eletronjun',
+		instagramUrl: 'https://www.instagram.com/eletronjun/',
+		likesCount: 318,
+		verifiedBadge: true,
+		sourceType: 'instagram',
+		tags: ['#EletronJun', '#Hardware', '#PCB', '#EletrônicaFGA'],
+		paperColor: 'kraft',
+		pinColor: 'blue',
 		rotation: 'rot-n-2',
 		isRead: false,
-		createdAt: 'Há 5h'
+		createdAt: 'Há 18h'
 	},
 	{
-		id: 'n3',
-		title: 'Oficina Prática de Git & GitHub para Calouros',
+		id: 'ig-zenitaerospace-ps',
+		title: '🛸 Recrutamento Zenit Aerospace: Satélites CubeSat & Foguetes',
+		category: 'Empresas Juniores',
+		organizer: 'Zenit Aerospace',
+		description: 'Decole sua trajetória na engenharia aeroespacial! Abertas as inscrições para os squads de Aerodinâmica & CFD, Estruturas Compósitas, Propulsão e Telemetria Espacial. Aberto para todos os cursos de Engenharia do Gama.',
+		expiresAt: 'Expira em 4 dias',
+		linkUrl: 'https://www.instagram.com/zenitaerospace/',
+		instagramHandle: '@zenitaerospace',
+		instagramUrl: 'https://www.instagram.com/zenitaerospace/',
+		likesCount: 384,
+		verifiedBadge: true,
+		sourceType: 'instagram',
+		tags: ['#ZenitAerospace', '#EngAeroespacial', '#CubeSat', '#FGA'],
+		paperColor: 'blue',
+		pinColor: 'silver',
+		rotation: 'rot-p-2',
+		isRead: false,
+		createdAt: 'Há 1 dia'
+	},
+	{
+		id: 'ig-matrizenergia-curso',
+		title: '☀️ Minicurso de Dimensionamento Solar & Mercado Livre de Energia',
+		category: 'Empresas Juniores',
+		organizer: 'Matriz Engenharia de Energia',
+		description: 'Domine como projetar sistemas fotovoltaicos conectados à rede (on-grid), cálculo de pay-back financeiro e as novidades regulatórias da ANEEL. Inscrições com desconto para calouros da UnB no link da bio!',
+		expiresAt: 'Expira em 5 dias',
+		linkUrl: 'https://www.instagram.com/matrizenergia/',
+		instagramHandle: '@matrizenergia',
+		instagramUrl: 'https://www.instagram.com/matrizenergia/',
+		likesCount: 226,
+		verifiedBadge: true,
+		sourceType: 'instagram',
+		tags: ['#MatrizEnergia', '#EnergiaSolar', '#Eficiencia', '#EnergiaFGA'],
+		paperColor: 'green',
+		pinColor: 'emerald',
+		rotation: 'rot-n-1',
+		isRead: false,
+		createdAt: 'Há 2 dias'
+	},
+	{
+		id: 'ig-mecajun-cad',
+		title: '🏎️ Desafio CAD 3D & Simulação Veicular com SolidWorks',
+		category: 'Empresas Juniores',
+		organizer: 'Mecajun Mecatrônica & Auto',
+		description: 'A Mecajun convida estudantes das engenharias Automotiva e Mecatrônica para a Maratona de Modelagem 3D. Prática intensiva com suspensão, trem de força e simulação estática com bancada de testes.',
+		expiresAt: 'Expira em 3 dias',
+		linkUrl: 'https://www.instagram.com/mecajun/',
+		instagramHandle: '@mecajun',
+		instagramUrl: 'https://www.instagram.com/mecajun/',
+		likesCount: 352,
+		verifiedBadge: true,
+		sourceType: 'instagram',
+		tags: ['#Mecajun', '#EngAutomotiva', '#SolidWorks', '#Mecatronica'],
+		paperColor: 'kraft',
+		pinColor: 'red',
+		rotation: 'rot-p-1',
+		isRead: false,
+		createdAt: 'Há 2 dias'
+	},
+	{
+		id: 'ig-cjr-hackathon',
+		title: '💻 Hackathon UnB: 48h de Código, Mentoria e R$ 10.000 em Prêmios',
+		category: 'Empresas Juniores',
+		organizer: 'CJR Empresa Júnior',
+		description: 'A maior maratona de desenvolvimento estudantil do DF está de volta! Monte seu squad com alunos da FGA e Darcy Ribeiro para construir soluções digitais de alto impacto. Vagas presenciais no CIC/UnB.',
+		expiresAt: 'Expira em 48h',
+		linkUrl: 'https://www.instagram.com/cjr.unb/',
+		instagramHandle: '@cjr.unb',
+		instagramUrl: 'https://www.instagram.com/cjr.unb/',
+		likesCount: 541,
+		verifiedBadge: true,
+		sourceType: 'instagram',
+		tags: ['#CJR', '#HackathonUnB', '#DevCommunity', '#Inovacao'],
+		paperColor: 'white',
+		pinColor: 'blue',
+		rotation: 'rot-n-2',
+		isRead: false,
+		createdAt: 'Há 3 dias'
+	},
+	{
+		id: 'ig-concentrodf-premio',
+		title: '🌟 Prêmio Concentro 2026: EJs da UnB FGA Lideram Impacto no DF',
+		category: 'Empresas Juniores',
+		organizer: 'Concentro DF (Federação)',
+		description: 'Parabenizamos as Empresas Juniores da FGA e de toda a UnB pelos projetos de excelência entregues à sociedade brasiliense. Acompanhe a transmissão da cerimônia de premiação ao vivo pelo YouTube da federação!',
+		expiresAt: 'Destaque da Semana',
+		linkUrl: 'https://www.instagram.com/concentrodf/',
+		instagramHandle: '@concentrodf',
+		instagramUrl: 'https://www.instagram.com/concentrodf/',
+		likesCount: 712,
+		verifiedBadge: true,
+		sourceType: 'instagram',
+		tags: ['#ConcentroDF', '#MEJ', '#OrgulhoDeSerMEJ', '#ImpactoUnB'],
+		paperColor: 'yellow',
+		pinColor: 'gold',
+		rotation: 'rot-p-2',
+		isRead: false,
+		createdAt: 'Há 4 dias'
+	},
+
+	// ==========================================
+	// 🏛️ DECANATOS DA UNB (DAC / DEG / DEX / DPI / RU)
+	// ==========================================
+	{
+		id: 'ig-dac-dds-assistencia',
+		title: '📢 Edital de Assistência Estudantil 2026/2: Auxílio Alimentação & Moradia',
+		category: 'Decanatos',
+		organizer: 'DDS / DAC UnB',
+		description: 'A Diretoria de Desenvolvimento Social do Decanato de Assuntos Comunitários (DAC) convoca estudantes para inscrição nos programas de Auxílio Socioeconômico, Moradia e Isenção de 100% no Restaurante Universitário. Envio de comprovantes pelo SIGAA.',
+		expiresAt: 'Prazo SIGAA: 28/Set',
+		linkUrl: 'https://www.instagram.com/dds.dac.unb/',
+		instagramHandle: '@dds.dac.unb',
+		instagramUrl: 'https://www.instagram.com/dds.dac.unb/',
+		likesCount: 895,
+		verifiedBadge: true,
+		sourceType: 'instagram',
+		tags: ['#DACUnB', '#DDS', '#AssistenciaEstudantil', '#AuxilioPermanencia'],
+		paperColor: 'white',
+		pinColor: 'red',
+		rotation: 'rot-n-1',
+		isRead: false,
+		createdAt: 'Há 4h'
+	},
+	{
+		id: 'ig-dex-semuni',
+		title: '🎪 26ª Semana Universitária UnB (SEMUNI): Programação no Campus Gama',
+		category: 'Decanatos',
+		organizer: 'Decanato de Extensão (DEX)',
+		description: 'Mais de 40 oficinas gratuitas, mostras de protótipos de engenharia e debates sobre tecnologia e sociedade acontecendo simultaneamente no UAC e Galpão da FGA. Emissão instantânea de créditos de extensão no SIGAA!',
+		expiresAt: 'Até 25/Set',
+		linkUrl: 'https://www.instagram.com/extensaounb/',
+		instagramHandle: '@extensaounb',
+		instagramUrl: 'https://www.instagram.com/extensaounb/',
+		likesCount: 1180,
+		verifiedBadge: true,
+		sourceType: 'instagram',
+		tags: ['#DEXUnB', '#Semuni2026', '#ExtensaoUnB', '#CreditosUnB'],
+		paperColor: 'yellow',
+		pinColor: 'gold',
+		rotation: 'rot-p-1',
+		isRead: false,
+		createdAt: 'Há 6h'
+	},
+	{
+		id: 'ig-dpi-pibic',
+		title: '🔬 Chamada Pública de Bolsas PIBIC & PIBITI 2026/2027 (CNPq / FAPDF)',
+		category: 'Decanatos',
+		organizer: 'Decanato de Pesquisa (DPI)',
+		description: 'Submissão de propostas de Iniciação Científica e Tecnológica aberta para docentes e discentes da UnB. Foco prioritário em Mobilidade Inteligente, Energias Renováveis, Microeletrônica e Robótica. Veja o edital no portal do DPI.',
+		expiresAt: 'Expira em 4 dias',
+		linkUrl: 'https://www.instagram.com/dpi.unb/',
+		instagramHandle: '@dpi.unb',
+		instagramUrl: 'https://www.instagram.com/dpi.unb/',
+		likesCount: 652,
+		verifiedBadge: true,
+		sourceType: 'instagram',
+		tags: ['#DPIUnB', '#PIBIC', '#PIBITI', '#InovacaoUnB'],
+		paperColor: 'white',
+		pinColor: 'red',
+		rotation: 'rot-p-2',
+		isRead: false,
+		createdAt: 'Há 1 dia'
+	},
+	{
+		id: 'ig-ru-dac-pix',
+		title: '🍽️ Comunicado Oficial: Recarga do Cartão via PIX e Horários no RU FGA',
+		category: 'Decanatos',
+		organizer: 'Diretoria do RU / DAC',
+		description: 'Recarregue sua carteirinha do RU via QR Code PIX instantâneo pelo portal do estudante sem pegar fila de guichê! O RU do Campus Gama opera com horário ampliado nos períodos de avaliação (Almoço: 11h15 - 14h00 | Jantar: 17h30 - 20h00).',
+		expiresAt: 'Vigência Imediata',
+		linkUrl: 'https://www.instagram.com/ru.unb_oficial/',
+		instagramHandle: '@ru.unb_oficial',
+		instagramUrl: 'https://www.instagram.com/ru.unb_oficial/',
+		likesCount: 1260,
+		verifiedBadge: true,
+		sourceType: 'instagram',
+		tags: ['#RUUnB', '#RUFGA', '#CardapioRU', '#PIXnoRU'],
+		paperColor: 'yellow',
+		pinColor: 'emerald',
+		rotation: 'rot-n-2',
+		isRead: false,
+		createdAt: 'Há 1 dia'
+	},
+	{
+		id: 'ig-deg-unb-calendario',
+		title: '🎓 Alerta de Matrícula: Prazo Final para Ajustes e Trancamento no SIGAA',
+		category: 'Decanatos',
+		organizer: 'DEG / SAA Oficial',
+		description: 'O Decanato de Ensino de Graduação (DEG) alerta todos os alunos regulares sobre o encerramento do prazo de solicitação de trancamento de matrícula justificado e ajustes finais de horário. Não perca a data limite.',
+		expiresAt: 'Sexta-feira 23h59',
+		linkUrl: 'https://www.instagram.com/unb_oficial/',
+		instagramHandle: '@unb_oficial',
+		instagramUrl: 'https://www.instagram.com/unb_oficial/',
+		likesCount: 1590,
+		verifiedBadge: true,
+		sourceType: 'instagram',
+		tags: ['#DEGUnB', '#UnBOficial', '#SIGAA', '#CalendarioAcademico'],
+		paperColor: 'white',
+		pinColor: 'purple',
+		rotation: 'rot-p-1',
+		isRead: false,
+		createdAt: 'Há 3 dias'
+	},
+	{
+		id: 'ig-dasu-dac-saude',
+		title: '🌱 Plantão de Acolhimento Psicológico & Rodas de Escuta da DASU',
+		category: 'Decanatos',
+		organizer: 'DASU / DAC UnB',
+		description: 'A Diretoria de Atenção à Saúde da Comunidade Universitária oferece suporte psicológico individual e rodas de conversa sobre estresse acadêmico. Agendamentos confidenciais abertos via SIGAA para alunos de todos os campi.',
+		expiresAt: 'Plantão Semanal',
+		linkUrl: 'https://www.instagram.com/dasu_unb/',
+		instagramHandle: '@dasu_unb',
+		instagramUrl: 'https://www.instagram.com/dasu_unb/',
+		likesCount: 483,
+		verifiedBadge: true,
+		sourceType: 'instagram',
+		tags: ['#DASU', '#DAC', '#SaudeMental', '#CuidadoUnB'],
+		paperColor: 'pink',
+		pinColor: 'purple',
+		rotation: 'rot-n-1',
+		isRead: false,
+		createdAt: 'Há 4 dias'
+	},
+
+	// ==========================================
+	// 📌 EVENTOS & EXTENSÃO COMUNITÁRIA (MURAL)
+	// ==========================================
+	{
+		id: 'n3-git',
+		title: 'Oficina Prática de Git & GitHub para Calouros da Engenharia',
 		category: 'Extensão',
 		organizer: 'Coletivo Software Livre FGA',
 		description: 'Aprenda versionamento na prática com comandos essenciais, branches e pull requests para não passar sufoco em APC e Orientação a Objetos. No Lab 3 do UAC.',
 		expiresAt: 'Expira em 24h',
 		linkUrl: 'https://t.me/fga_git',
-		tags: ['Workshops', 'Calouros', 'Git'],
+		tags: ['Workshops', 'Calouros', 'Git', 'Software'],
 		paperColor: 'kraft',
 		pinColor: 'blue',
 		rotation: 'rot-p-2',
@@ -388,7 +922,7 @@ export const INITIAL_NOTICES: NoticePost[] = [
 		createdAt: 'Há 1 dia'
 	},
 	{
-		id: 'n4',
+		id: 'n4-cig',
 		title: 'Copa InterEngenharias Gama (CIG 2026)',
 		category: 'Eventos',
 		organizer: 'Atlética Manada FGA',
@@ -411,8 +945,25 @@ function createGameStore() {
 	const storedQuests = typeof window !== 'undefined' ? localStorage.getItem('hubfga_quests') : null;
 	const initialQuests: Quest[] = storedQuests ? JSON.parse(storedQuests) : INITIAL_QUESTS;
 
-	const storedCaravanas = typeof window !== 'undefined' ? localStorage.getItem('hubfga_caravanas') : null;
-	const initialCaravanas: CaravanaPost[] = storedCaravanas ? JSON.parse(storedCaravanas) : INITIAL_CARAVANAS;
+	function getInitialCaravanas(): CaravanaPost[] {
+		if (typeof window === 'undefined') return INITIAL_CARAVANAS;
+		const stored = localStorage.getItem('hubfga_caravanas_v2') || localStorage.getItem('hubfga_caravanas');
+		if (!stored) return INITIAL_CARAVANAS;
+		try {
+			const parsed: CaravanaPost[] = JSON.parse(stored);
+			const existingMap = new Map(parsed.map((c) => [c.id, c]));
+			const merged = INITIAL_CARAVANAS.map((defaultPost) => {
+				const existing = existingMap.get(defaultPost.id);
+				return existing ? { ...defaultPost, ...existing } : defaultPost;
+			});
+			const custom = parsed.filter((p) => !INITIAL_CARAVANAS.some((d) => d.id === p.id));
+			return [...merged, ...custom];
+		} catch {
+			return INITIAL_CARAVANAS;
+		}
+	}
+
+	const initialCaravanas = getInitialCaravanas();
 
 	function getInitialBuses(): BusReport[] {
 		if (typeof window === 'undefined') return INITIAL_BUS_LINES;
@@ -439,13 +990,55 @@ function createGameStore() {
 
 	const initialBuses = getInitialBuses();
 
-	const storedNotices = typeof window !== 'undefined' ? localStorage.getItem('hubfga_notices') : null;
-	const initialNotices: NoticePost[] = storedNotices ? JSON.parse(storedNotices) : INITIAL_NOTICES;
+	function getInitialRu(): RuReport {
+		if (typeof window === 'undefined') return INITIAL_RU_DATA;
+		const stored = localStorage.getItem('hubfga_ru');
+		if (!stored) return INITIAL_RU_DATA;
+		try {
+			const parsed: RuReport = JSON.parse(stored);
+			return {
+				...INITIAL_RU_DATA,
+				...parsed,
+				communityVotes: parsed.communityVotes ?? INITIAL_RU_DATA.communityVotes,
+				recentReports: parsed.recentReports?.length ? parsed.recentReports : INITIAL_RU_DATA.recentReports,
+				currentStatus: parsed.currentStatus ?? INITIAL_RU_DATA.currentStatus,
+				estimatedWaitMinutes: parsed.estimatedWaitMinutes ?? INITIAL_RU_DATA.estimatedWaitMinutes,
+				userLastVotedStatus: parsed.userLastVotedStatus
+			};
+		} catch {
+			return INITIAL_RU_DATA;
+		}
+	}
+
+	const initialRu = getInitialRu();
+
+	function getInitialNotices(): NoticePost[] {
+		if (typeof window === 'undefined') return INITIAL_NOTICES;
+		const stored = localStorage.getItem('hubfga_notices_v2') || localStorage.getItem('hubfga_notices');
+		if (!stored) return INITIAL_NOTICES;
+		try {
+			const parsed: NoticePost[] = JSON.parse(stored);
+			const existingMap = new Map(parsed.map((n) => [n.id, n]));
+			// Garante que todas as postagens oficiais de EJs e Decanatos do INITIAL_NOTICES estejam presentes
+			const merged = INITIAL_NOTICES.map((defaultNotice) => {
+				const existing = existingMap.get(defaultNotice.id);
+				return existing ? { ...defaultNotice, isRead: existing.isRead ?? defaultNotice.isRead } : defaultNotice;
+			});
+			// Preserva posts adicionais criados pelo usuário
+			const customUserPosts = parsed.filter((p) => !INITIAL_NOTICES.some((d) => d.id === p.id));
+			return [...merged, ...customUserPosts];
+		} catch {
+			return INITIAL_NOTICES;
+		}
+	}
+
+	const initialNotices = getInitialNotices();
 
 	const user = writable<UserProfile>(initialUser);
 	const quests = writable<Quest[]>(initialQuests);
 	const caravanas = writable<CaravanaPost[]>(initialCaravanas);
 	const buses = writable<BusReport[]>(initialBuses);
+	const ru = writable<RuReport>(initialRu);
 	const notices = writable<NoticePost[]>(initialNotices);
 	const toasts = writable<ToastNotification[]>([]);
 
@@ -453,9 +1046,16 @@ function createGameStore() {
 	if (typeof window !== 'undefined') {
 		user.subscribe((val) => localStorage.setItem('hubfga_user', JSON.stringify(val)));
 		quests.subscribe((val) => localStorage.setItem('hubfga_quests', JSON.stringify(val)));
-		caravanas.subscribe((val) => localStorage.setItem('hubfga_caravanas', JSON.stringify(val)));
+		caravanas.subscribe((val) => {
+			localStorage.setItem('hubfga_caravanas_v2', JSON.stringify(val));
+			localStorage.setItem('hubfga_caravanas', JSON.stringify(val));
+		});
 		buses.subscribe((val) => localStorage.setItem('hubfga_buses', JSON.stringify(val)));
-		notices.subscribe((val) => localStorage.setItem('hubfga_notices', JSON.stringify(val)));
+		ru.subscribe((val) => localStorage.setItem('hubfga_ru', JSON.stringify(val)));
+		notices.subscribe((val) => {
+			localStorage.setItem('hubfga_notices_v2', JSON.stringify(val));
+			localStorage.setItem('hubfga_notices', JSON.stringify(val));
+		});
 	}
 
 	function triggerToast(toast: Omit<ToastNotification, 'id'>) {
@@ -527,7 +1127,7 @@ function createGameStore() {
 		});
 	}
 
-	function checkQuestProgress(category: 'caravana' | 'bus' | 'notice') {
+	function checkQuestProgress(category: 'caravana' | 'bus' | 'notice' | 'ru') {
 		quests.update((qList) => {
 			return qList.map((q) => {
 				if (q.category === category && !q.isCompleted) {
@@ -647,8 +1247,8 @@ function createGameStore() {
 
 		caravanas.update((current) => [newPost, ...current]);
 
-		const xpReward = newPost.type === 'caravana' ? 60 : newPost.type === 'squad' ? 45 : 30;
-		const karmaReward = newPost.type === 'caravana' ? 5 : 4;
+		const xpReward = newPost.type === 'caravana' ? 60 : newPost.type === 'squad' ? 45 : newPost.type === 'denuncia' ? 50 : 30;
+		const karmaReward = newPost.type === 'caravana' ? 5 : newPost.type === 'denuncia' ? 5 : 4;
 		addXp(xpReward, karmaReward, `Fixou novo chamado no mural (${newPost.type.toUpperCase()})`);
 		checkQuestProgress('caravana');
 	}
@@ -662,11 +1262,107 @@ function createGameStore() {
 		checkQuestProgress('notice');
 	}
 
+	function reportRuQueue(status: RuQueueStatus, comment?: string) {
+		const currentUser = get(user);
+		if (currentUser.soundEnabled) playStampSound();
+
+		const waitTimes: Record<RuQueueStatus, number> = {
+			vazia: 4,
+			moderada: 12,
+			grande: 25,
+			lotada: 42
+		};
+
+		const statusLabels: Record<RuQueueStatus, string> = {
+			vazia: 'Vazia (<5 min)',
+			moderada: 'Moderada (10-15 min)',
+			grande: 'Grande (20-30 min)',
+			lotada: 'Quilométrica (35+ min)'
+		};
+
+		ru.update((current) => {
+			const newVotes = { ...current.communityVotes };
+			newVotes[status] = (newVotes[status] || 0) + 1;
+
+			const newReport: RuQueueVoteReport = {
+				id: 'ru-' + Date.now(),
+				status,
+				timestamp: 'Agora mesmo',
+				studentName: currentUser.name.split(' ')[0],
+				studentCourse: currentUser.course.replace('Engenharia de ', '').replace('Engenharia ', ''),
+				comment: comment?.trim() || undefined,
+				likes: 0
+			};
+
+			const newReports = [newReport, ...current.recentReports.slice(0, 9)];
+
+			return {
+				...current,
+				currentStatus: status,
+				estimatedWaitMinutes: waitTimes[status],
+				communityVotes: newVotes,
+				recentReports: newReports,
+				lastUpdated: 'Agora mesmo por ' + currentUser.name.split(' ')[0],
+				userLastVotedStatus: status
+			};
+		});
+
+		const xpReward = comment?.trim() ? 25 : 20;
+		const karmaReward = 2;
+		addXp(xpReward, karmaReward, `Reportou status da fila do RU: ${statusLabels[status]}`);
+		checkQuestProgress('ru');
+	}
+
+	function likeRuReport(reportId: string) {
+		const currentUser = get(user);
+		if (currentUser.soundEnabled) playStampSound();
+
+		ru.update((current) => {
+			return {
+				...current,
+				recentReports: current.recentReports.map((rep) => {
+					if (rep.id === reportId) {
+						return { ...rep, likes: (rep.likes || 0) + 1 };
+					}
+					return rep;
+				})
+			};
+		});
+	}
+
+	function syncInstagramFeeds() {
+		const currentUser = get(user);
+		if (currentUser.soundEnabled) {
+			playStampSound();
+			playXpSound();
+		}
+
+		notices.update((current) => {
+			const currentMap = new Map(current.map((n) => [n.id, n]));
+			const updated = INITIAL_NOTICES.map((n) => {
+				const existing = currentMap.get(n.id);
+				return existing ? { ...n, isRead: existing.isRead } : n;
+			});
+			const custom = current.filter((p) => !INITIAL_NOTICES.some((d) => d.id === p.id));
+			return [...updated, ...custom];
+		});
+
+		addXp(15, 2, 'Sincronizou avisos oficiais dos Instagrams da UnB e EJs');
+		triggerToast({
+			title: '📸 Murais do Instagram Sincronizados!',
+			message: 'Avisos atualizados diretamente das contas @orcestragamificacao, @dds.dac.unb, @extensaounb, @dpi.unb, @eletronjun e mais.',
+			xpAmount: 15,
+			karmaAmount: 2,
+			type: 'xp'
+		});
+	}
+
 	function resetToDefaults() {
 		user.set(INITIAL_PROFILE);
 		quests.set(INITIAL_QUESTS);
 		caravanas.set(INITIAL_CARAVANAS);
 		buses.set(INITIAL_BUS_LINES);
+		ru.set(INITIAL_RU_DATA);
 		notices.set(INITIAL_NOTICES);
 		if (typeof window !== 'undefined') {
 			localStorage.clear();
@@ -679,20 +1375,72 @@ function createGameStore() {
 		});
 	}
 
+	function updateProfile(updates: Partial<UserProfile>) {
+		user.update((u) => {
+			const updated = { ...u, ...updates };
+			if (updates.xp !== undefined) {
+				const info = getLevelInfo(updates.xp);
+				updated.level = info.level;
+				updated.title = info.title;
+			}
+			return updated;
+		});
+		const currentUser = get(user);
+		if (currentUser.soundEnabled) playStampSound();
+	}
+
+	function supportDenuncia(postId: string) {
+		const currentUser = get(user);
+		if (currentUser.soundEnabled) {
+			playStampSound();
+			playXpSound();
+		}
+
+		caravanas.update((posts) =>
+			posts.map((p) => {
+				if (p.id === postId) {
+					const supported = !p.userSupported;
+					const count = (p.supportedCount || 0) + (supported ? 1 : -1);
+					return {
+						...p,
+						userSupported: supported,
+						supportedCount: Math.max(0, count)
+					};
+				}
+				return p;
+			})
+		);
+
+		addXp(20, 3, 'Confirmou denúncia comunitária na FGA (+20 XP)');
+		triggerToast({
+			title: '🪳 Denúncia Apoiada!',
+			message: 'Sua confirmação foi somada ao reporte comunitário da FGA.',
+			xpAmount: 20,
+			karmaAmount: 3,
+			type: 'xp'
+		});
+	}
+
 	return {
 		user,
 		quests,
 		caravanas,
 		buses,
+		ru,
 		notices,
 		toasts,
 		addXp,
+		updateProfile,
 		toggleSound,
 		joinCaravana,
 		voteBusLine,
+		reportRuQueue,
+		likeRuReport,
 		markNoticeRead,
 		createPost,
 		createNotice,
+		supportDenuncia,
+		syncInstagramFeeds,
 		dismissToast,
 		resetToDefaults
 	};

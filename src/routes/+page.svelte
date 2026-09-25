@@ -4,9 +4,11 @@
 	import WashiTape from '$lib/components/WashiTape.svelte';
 	import GamificationSidebar from '$lib/components/GamificationSidebar.svelte';
 	import StudentBadge from '$lib/components/StudentBadge.svelte';
+	import StudentIdCardModal from '$lib/components/StudentIdCardModal.svelte';
 	import CaravanaCard from '$lib/components/cards/CaravanaCard.svelte';
 	import BusCard from '$lib/components/cards/BusCard.svelte';
 	import NoticeCard from '$lib/components/cards/NoticeCard.svelte';
+	import RuCard from '$lib/components/cards/RuCard.svelte';
 	import CreatePostModal from '$lib/components/CreatePostModal.svelte';
 	import { 
 		ShieldAlert, 
@@ -16,29 +18,44 @@
 		Filter, 
 		Volume2, 
 		VolumeX, 
-		Sparkles,
-		Flame,
-		X,
-		Award
+		Sparkles, 
+		Flame, 
+		X, 
+		Award,
+		IdCard,
+		UtensilsCrossed,
+		RefreshCw,
+		Landmark,
+		Building2
 	} from 'lucide-svelte';
+	import InstagramIcon from '$lib/components/InstagramIcon.svelte';
+	import CockroachIcon from '$lib/components/CockroachIcon.svelte';
 
 	// Stores reativas
 	const user = gameStore.user;
 	const caravanas = gameStore.caravanas;
 	const buses = gameStore.buses;
+	const ru = gameStore.ru;
 	const notices = gameStore.notices;
 
 	// Estados locais com Svelte 5 Runes
 	let activeTab = $state<'chamados' | 'toolbox' | 'avisos'>('chamados');
-	let chamadosFilter = $state<'todos' | 'caravana' | 'squad' | 'reporte'>('todos');
+	let chamadosFilter = $state<'todos' | 'caravana' | 'squad' | 'reporte' | 'denuncia'>('todos');
+	let toolboxFilter = $state<'todos' | 'ru' | 'onibus'>('todos');
 	let avisosFilter = $state<string>('Todos');
 	let isCreateModalOpen = $state(false);
 	let isProfileDrawerOpen = $state(false);
+	let isStudentIdCardOpen = $state(false);
+	let isSyncing = $state(false);
 
 	// Contagens reativas
 	let activeCaravanasCount = $derived($caravanas.length);
+	let denunciasCount = $derived($caravanas.filter((c) => c.type === 'denuncia').length);
 	let busesCount = $derived($buses.length);
+	let toolboxTotalCount = $derived($buses.length + 1);
 	let activeNoticesCount = $derived($notices.length);
+	let decanatosCount = $derived($notices.filter((n) => n.category === 'Decanatos').length);
+	let ejsCount = $derived($notices.filter((n) => n.category === 'Empresas Juniores').length);
 
 	// Filtros reativos
 	let filteredCaravanas = $derived(
@@ -53,7 +70,22 @@
 			: $notices.filter((n) => n.category === avisosFilter)
 	);
 
-	const noticeCategories = ['Todos', 'Edital', 'Empresas Juniores', 'Extensão', 'Eventos'];
+	let noticeCategories = $derived([
+		{ id: 'Todos', label: 'Todos', count: activeNoticesCount },
+		{ id: 'Decanatos', label: '🏛️ Decanatos UnB', count: decanatosCount },
+		{ id: 'Empresas Juniores', label: '🚀 Empresas Juniores', count: ejsCount },
+		{ id: 'Edital', label: 'Editais', count: $notices.filter((n) => n.category === 'Edital').length },
+		{ id: 'Extensão', label: 'Extensão', count: $notices.filter((n) => n.category === 'Extensão').length },
+		{ id: 'Eventos', label: 'Eventos', count: $notices.filter((n) => n.category === 'Eventos').length }
+	]);
+
+	function handleSyncInstagram() {
+		isSyncing = true;
+		setTimeout(() => {
+			gameStore.syncInstagramFeeds();
+			isSyncing = false;
+		}, 600);
+	}
 </script>
 
 <!-- Moldura de Madeira ao Redor de Todo o Quadro de Cortiça -->
@@ -66,45 +98,44 @@
 		<!-- ========================================== -->
 		<!-- BARRA SUPERIOR (HEADER NA CORTIÇA)        -->
 		<!-- ========================================== -->
-		<header class="relative z-10 px-3 sm:px-5 py-2.5 sm:py-3 border-b-2 border-[#8b5e34]/60 bg-[#996e3d]/30 backdrop-blur-[2px] flex flex-wrap items-center justify-between gap-3 shadow-sm">
+		<header class="relative z-10 px-3 sm:px-5 py-2.5 sm:py-3 border-b-2 border-[#8b5e34]/70 bg-gradient-to-r from-[#8a5d32]/45 via-[#996e3d]/35 to-[#8a5d32]/45 backdrop-blur-[3px] flex flex-wrap lg:flex-nowrap items-center justify-between gap-3 shadow-md">
 			<!-- Logo / Placa de Metal Universitária -->
-			<div class="flex items-center gap-3">
-				<div class="relative bg-gradient-to-b from-[#dfbb83] via-[#c29656] to-[#8c6027] text-stone-950 px-3.5 py-1.5 rounded-sm border-2 border-[#6d4615] shadow-[0_4px_8px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.5)] flex items-center gap-2">
-					<div class="w-2.5 h-2.5 rounded-full bg-stone-900 border border-stone-500 shadow-inner"></div>
+			<div class="flex items-center gap-2.5">
+				<div class="relative bg-gradient-to-b from-[#e3c18b] via-[#c49857] to-[#875b22] text-stone-950 px-3 sm:px-4 py-1.5 sm:py-2 rounded-sm border-2 border-[#633e10] shadow-[0_4px_10px_rgba(0,0,0,0.35),inset_0_1px_2px_rgba(255,255,255,0.7)] flex items-center gap-2 sm:gap-2.5 select-none">
+					<!-- Parafuso de latão chanfrado esquerdo -->
+					<div class="w-2.5 h-2.5 rounded-full bg-stone-900 border border-stone-400/80 shadow-inner flex items-center justify-center">
+						<div class="w-1.5 h-0.5 bg-stone-400 rotate-45"></div>
+					</div>
 					<div>
-						<h1 class="font-extrabold text-base sm:text-lg tracking-tight leading-none font-sans">
-							HUB FGA
-						</h1>
-						<span class="text-[9px] uppercase tracking-widest font-black text-amber-950 block">
-							Mural da UnB Gama
+						<div class="flex items-center gap-1.5">
+							<h1 class="font-black text-base sm:text-lg tracking-tight leading-none font-sans text-stone-950">
+								HUB FGA
+							</h1>
+							<span class="text-[8px] font-mono font-black px-1 py-0.2 rounded bg-stone-950/20 text-stone-950 border border-stone-950/30">
+								UnB
+							</span>
+						</div>
+						<span class="text-[8px] sm:text-[9px] uppercase tracking-widest font-black text-amber-950 block mt-0.5">
+							Mural Universitário
 						</span>
 					</div>
-					<div class="w-2.5 h-2.5 rounded-full bg-stone-900 border border-stone-500 shadow-inner"></div>
+					<!-- Parafuso de latão chanfrado direito -->
+					<div class="w-2.5 h-2.5 rounded-full bg-stone-900 border border-stone-400/80 shadow-inner flex items-center justify-center">
+						<div class="w-1.5 h-0.5 bg-stone-400 -rotate-45"></div>
+					</div>
 				</div>
-
-				<!-- Badge Rápida de XP no Mobile -->
-				<button 
-					type="button" 
-					onclick={() => isProfileDrawerOpen = true}
-					class="sm:hidden flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100/90 border border-amber-300 shadow-xs text-xs font-bold text-amber-950"
-					aria-label="Abrir Perfil e Missões"
-				>
-					<img src={$user.avatarUrl} alt="" class="w-5 h-5 rounded-full object-cover" />
-					<span>Nv. {$user.level}</span>
-					<span class="text-[10px] text-emerald-800 font-mono">+{$user.xp} XP</span>
-				</button>
 			</div>
 
 			<!-- Abas Centrais Estilo Washi Tape / Carimbos -->
-			<nav class="flex items-center gap-2 overflow-x-auto py-1" aria-label="Navegação do Mural">
+			<nav class="flex items-center gap-2 overflow-x-auto py-1 order-3 lg:order-2 w-full lg:w-auto justify-center" aria-label="Navegação do Mural">
 				<button 
 					type="button" 
 					onclick={() => activeTab = 'chamados'}
-					class="relative px-4 py-1.5 font-bold text-xs sm:text-sm uppercase tracking-wider rounded-sm transition-all duration-150 flex items-center gap-1.5 select-none active:scale-95 {activeTab === 'chamados' ? 'bg-amber-100 text-stone-900 shadow-md border-b-3 border-amber-500 -rotate-1 font-extrabold scale-105' : 'bg-stone-900/40 text-amber-100/90 hover:bg-stone-900/60'}"
+					class="relative px-3.5 sm:px-4 py-1.5 font-bold text-xs sm:text-sm uppercase tracking-wider rounded-sm transition-all duration-150 flex items-center gap-1.5 select-none active:scale-95 cursor-pointer {activeTab === 'chamados' ? 'bg-amber-100 text-stone-900 shadow-md border-b-3 border-amber-500 -rotate-1 font-extrabold scale-105' : 'bg-stone-900/40 text-amber-100/90 hover:bg-stone-900/60'}"
 				>
 					<ShieldAlert class="w-4 h-4 text-rose-600" />
 					<span>Chamados</span>
-					<span class="text-[10px] px-1.5 py-0.2 rounded-full {activeTab === 'chamados' ? 'bg-amber-800 text-amber-100' : 'bg-white/20 text-white'}">
+					<span class="text-[10px] px-1.5 py-0.2 rounded-full {activeTab === 'chamados' ? 'bg-amber-800 text-amber-100 font-mono font-bold' : 'bg-white/20 text-white font-mono'}">
 						{activeCaravanasCount}
 					</span>
 				</button>
@@ -112,39 +143,38 @@
 				<button 
 					type="button" 
 					onclick={() => activeTab = 'toolbox'}
-					class="relative px-4 py-1.5 font-bold text-xs sm:text-sm uppercase tracking-wider rounded-sm transition-all duration-150 flex items-center gap-1.5 select-none active:scale-95 {activeTab === 'toolbox' ? 'bg-sky-100 text-stone-900 shadow-md border-b-3 border-sky-500 rotate-1 font-extrabold scale-105' : 'bg-stone-900/40 text-amber-100/90 hover:bg-stone-900/60'}"
+					class="relative px-3.5 sm:px-4 py-1.5 font-bold text-xs sm:text-sm uppercase tracking-wider rounded-sm transition-all duration-150 flex items-center gap-1.5 select-none active:scale-95 cursor-pointer {activeTab === 'toolbox' ? 'bg-sky-100 text-stone-900 shadow-md border-b-3 border-sky-500 rotate-1 font-extrabold scale-105' : 'bg-stone-900/40 text-amber-100/90 hover:bg-stone-900/60'}"
 				>
 					<Toolbox class="w-4 h-4 text-sky-700" />
 					<span>Toolbox</span>
-					<span class="text-[10px] px-1.5 py-0.2 rounded-full {activeTab === 'toolbox' ? 'bg-sky-800 text-sky-100' : 'bg-white/20 text-white'}">
-						{busesCount}
+					<span class="text-[10px] px-1.5 py-0.2 rounded-full {activeTab === 'toolbox' ? 'bg-sky-800 text-sky-100 font-mono font-bold' : 'bg-white/20 text-white font-mono'}">
+						{toolboxTotalCount}
 					</span>
 				</button>
 
 				<button 
 					type="button" 
 					onclick={() => activeTab = 'avisos'}
-					class="relative px-4 py-1.5 font-bold text-xs sm:text-sm uppercase tracking-wider rounded-sm transition-all duration-150 flex items-center gap-1.5 select-none active:scale-95 {activeTab === 'avisos' ? 'bg-rose-100 text-stone-900 shadow-md border-b-3 border-rose-500 -rotate-1 font-extrabold scale-105' : 'bg-stone-900/40 text-amber-100/90 hover:bg-stone-900/60'}"
+					class="relative px-3.5 sm:px-4 py-1.5 font-bold text-xs sm:text-sm uppercase tracking-wider rounded-sm transition-all duration-150 flex items-center gap-1.5 select-none active:scale-95 cursor-pointer {activeTab === 'avisos' ? 'bg-rose-100 text-stone-900 shadow-md border-b-3 border-rose-500 -rotate-1 font-extrabold scale-105' : 'bg-stone-900/40 text-amber-100/90 hover:bg-stone-900/60'}"
 				>
 					<Megaphone class="w-4 h-4 text-amber-700" />
 					<span>Avisos</span>
-					<span class="text-[10px] px-1.5 py-0.2 rounded-full {activeTab === 'avisos' ? 'bg-rose-800 text-rose-100' : 'bg-white/20 text-white'}">
+					<span class="text-[10px] px-1.5 py-0.2 rounded-full {activeTab === 'avisos' ? 'bg-rose-800 text-rose-100 font-mono font-bold' : 'bg-white/20 text-white font-mono'}">
 						{activeNoticesCount}
 					</span>
 				</button>
 			</nav>
 
-			<!-- Ações da Direita: Crachá Estudantil UnB, Áudio e Botão Novo Post-it -->
-			<div class="flex items-center gap-2.5">
-				<!-- Carteirinha Estudantil da UnB (Crachá Compacto não invasivo no Header) -->
-				<div class="hidden sm:block">
-					<StudentBadge onOpenQuests={() => isProfileDrawerOpen = true} />
-				</div>
+			<!-- Ações da Direita: Botão da Pessoa (Crachá), Áudio e Botão Novo Post-it -->
+			<div class="flex items-center gap-2 sm:gap-2.5 order-2 lg:order-3">
+				<!-- Botão da Pessoa: Crachá / Carteirinha Estudantil da UnB (abre por cima ao clicar) -->
+				<StudentBadge onOpenQuests={() => isStudentIdCardOpen = true} />
 
+				<!-- Controle de Efeitos Sonoros -->
 				<button 
 					type="button" 
 					onclick={() => gameStore.toggleSound()}
-					class="p-2 rounded-full bg-stone-900/50 hover:bg-stone-900/70 text-amber-200 transition-colors shadow-xs"
+					class="p-2 sm:p-2.5 rounded-full bg-stone-900/50 hover:bg-stone-900/75 text-amber-200 hover:text-amber-100 transition-colors shadow-xs border border-amber-900/30 cursor-pointer active:scale-95"
 					title={$user.soundEnabled ? 'Silenciar Áudio' : 'Ativar Efeitos Sonoros'}
 					aria-label="Controle de Som"
 				>
@@ -159,7 +189,7 @@
 				<button 
 					type="button" 
 					onclick={() => isCreateModalOpen = true}
-					class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-md font-extrabold text-xs bg-gradient-to-r from-amber-700 to-amber-900 hover:from-amber-800 hover:to-stone-950 text-amber-50 shadow-md border border-amber-500/40 active:scale-95 transition-all"
+					class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-md font-extrabold text-xs bg-gradient-to-r from-amber-700 to-amber-900 hover:from-amber-800 hover:to-stone-950 text-amber-50 shadow-md border border-amber-500/40 active:scale-95 transition-all cursor-pointer"
 				>
 					<Plus class="w-4 h-4" />
 					<span>+ Fixar Post-it</span>
@@ -204,32 +234,95 @@
 					>
 						Alertas
 					</button>
+					<button 
+						type="button" 
+						onclick={() => chamadosFilter = 'denuncia'}
+						class="px-2.5 py-1 rounded text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer {chamadosFilter === 'denuncia' ? 'bg-amber-100 text-stone-900 shadow-xs' : 'text-amber-200/80 hover:bg-black/20'}"
+					>
+						<CockroachIcon size={14} class={chamadosFilter === 'denuncia' ? 'text-amber-950' : 'text-amber-300'} />
+						<span>Denúncias</span>
+						<span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono {chamadosFilter === 'denuncia' ? 'bg-rose-900 text-amber-100' : 'bg-white/20 text-white'}">
+							{denunciasCount}
+						</span>
+					</button>
 
 				{:else if activeTab === 'toolbox'}
-					<span class="text-xs text-amber-200/90 font-medium italic">
-						Tíquetes e Painéis Oficiais da SEMOB-DF com validações comunitárias da FGA
-					</span>
+					<div class="flex items-center gap-1.5 flex-wrap">
+						<button 
+							type="button" 
+							onclick={() => toolboxFilter = 'todos'}
+							class="px-2.5 py-1 rounded text-xs font-bold transition-all cursor-pointer {toolboxFilter === 'todos' ? 'bg-sky-100 text-stone-900 shadow-xs' : 'text-amber-200/80 hover:bg-black/20'}"
+						>
+							Todos
+						</button>
+						<button 
+							type="button" 
+							onclick={() => toolboxFilter = 'ru'}
+							class="px-2.5 py-1 rounded text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer {toolboxFilter === 'ru' ? 'bg-sky-100 text-stone-900 shadow-xs' : 'text-amber-200/80 hover:bg-black/20'}"
+						>
+							<UtensilsCrossed class="w-3.5 h-3.5 text-amber-500" />
+							<span>Fila do RU</span>
+							<span class="text-[10px] px-1.5 py-0.2 rounded font-mono font-black {
+								$ru.currentStatus === 'vazia' ? 'bg-emerald-700 text-emerald-100' :
+								$ru.currentStatus === 'moderada' ? 'bg-amber-700 text-amber-100' :
+								$ru.currentStatus === 'grande' ? 'bg-orange-700 text-orange-100' :
+								'bg-rose-700 text-rose-100'
+							}">
+								~{$ru.estimatedWaitMinutes}m
+							</span>
+						</button>
+						<button 
+							type="button" 
+							onclick={() => toolboxFilter = 'onibus'}
+							class="px-2.5 py-1 rounded text-xs font-bold transition-all flex items-center gap-1 cursor-pointer {toolboxFilter === 'onibus' ? 'bg-sky-100 text-stone-900 shadow-xs' : 'text-amber-200/80 hover:bg-black/20'}"
+						>
+							<span>Ônibus SEMOB</span>
+							<span class="text-[10px] px-1.5 py-0.2 rounded-full bg-white/20 text-white font-mono">
+								{busesCount}
+							</span>
+						</button>
+					</div>
 
 				{:else if activeTab === 'avisos'}
-					<div class="flex items-center gap-1.5">
+					<div class="flex items-center gap-1.5 flex-wrap">
 						{#each noticeCategories as cat}
 							<button 
 								type="button" 
-								onclick={() => avisosFilter = cat}
-								class="px-2.5 py-1 rounded text-xs font-bold transition-all {avisosFilter === cat ? 'bg-amber-100 text-stone-900 shadow-xs' : 'text-amber-200/80 hover:bg-black/20'}"
+								onclick={() => avisosFilter = cat.id}
+								class="px-2.5 py-1 rounded text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer {avisosFilter === cat.id ? 'bg-amber-100 text-stone-900 shadow-xs' : 'text-amber-200/80 hover:bg-black/20'}"
 							>
-								{cat}
+								<span>{cat.label}</span>
+								<span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono {avisosFilter === cat.id ? 'bg-amber-800 text-amber-100 font-bold' : 'bg-white/20 text-white/90'}">
+									{cat.count}
+								</span>
 							</button>
 						{/each}
 					</div>
 				{/if}
 			</div>
 
-			<!-- Indicador de Status Comunitário -->
-			<div class="hidden md:flex items-center gap-2 text-xs text-amber-200 font-mono">
-				<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-				<span>Mural Universitário • Gama/DF</span>
-			</div>
+			{#if activeTab === 'avisos'}
+				<!-- Botão de Sincronização Dinâmica com Instagram dos Decanatos e EJs -->
+				<div class="flex items-center gap-2 shrink-0">
+					<button
+						type="button"
+						onclick={handleSyncInstagram}
+						class="inline-flex items-center gap-1.5 px-3 py-1 rounded font-bold text-xs bg-gradient-to-r from-amber-700 to-amber-900 hover:from-amber-600 hover:to-amber-800 text-amber-100 border border-amber-500/40 shadow-xs active:scale-95 transition-all cursor-pointer {isSyncing ? 'opacity-75' : ''}"
+						disabled={isSyncing}
+						title="Sincronizar feeds mais recentes dos Instagrams da UnB e EJs (+15 XP)"
+					>
+						<RefreshCw class="w-3.5 h-3.5 text-amber-300 {isSyncing ? 'animate-spin' : ''}" />
+						<span class="hidden sm:inline">{isSyncing ? 'Sincronizando...' : 'Sincronizar Feeds'}</span>
+						<span class="text-[10px] text-amber-300 font-mono bg-amber-950/60 px-1 py-0.2 rounded">+15 XP</span>
+					</button>
+				</div>
+			{:else}
+				<!-- Indicador de Status Comunitário -->
+				<div class="hidden md:flex items-center gap-2 text-xs text-amber-200 font-mono">
+					<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+					<span>Mural Universitário • Gama/DF</span>
+				</div>
+			{/if}
 		</div>
 
 		<!-- ========================================== -->
@@ -261,15 +354,47 @@
 				{/if}
 
 			{:else if activeTab === 'toolbox'}
-				<!-- ABA 2: TOOLBOX (Tíquetes de Ônibus com Picote e Fita Durex) -->
-				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 xl:gap-x-14 gap-y-12 xl:gap-y-16 pt-4 sm:pt-6 items-start">
-					{#each $buses as bus (bus.id)}
-						<BusCard {bus} />
-					{/each}
-				</div>
+				<!-- ABA 2: TOOLBOX (Fila do RU + Tíquetes de Ônibus com Picote e Fita Durex) -->
+				{#if toolboxFilter === 'todos'}
+					<!-- Destaque: Fila do RU em Tempo Real -->
+					<div class="mb-10 max-w-4xl mx-auto">
+						<RuCard />
+					</div>
+
+					<!-- Divisor / Tarja Washi Tape da Cortiça -->
+					<div class="flex items-center gap-3 my-8 max-w-4xl mx-auto select-none">
+						<div class="flex-1 h-[2px] bg-[#8b5e34]/50"></div>
+						<div class="washi-tape-blue text-[11px] font-mono shadow-sm">
+							🚌 TÍQUETES & HORÁRIOS OFICIAIS DA SEMOB-DF
+						</div>
+						<div class="flex-1 h-[2px] bg-[#8b5e34]/50"></div>
+					</div>
+
+					<!-- Grade de Ônibus -->
+					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 xl:gap-x-14 gap-y-12 xl:gap-y-16 pt-2 items-start">
+						{#each $buses as bus (bus.id)}
+							<BusCard {bus} />
+						{/each}
+					</div>
+
+				{:else if toolboxFilter === 'ru'}
+					<!-- Visão Focada Exclusiva da Fila do RU -->
+					<div class="max-w-4xl mx-auto pt-2">
+						<RuCard />
+					</div>
+
+				{:else if toolboxFilter === 'onibus'}
+					<!-- Visão Apenas de Ônibus -->
+					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 xl:gap-x-14 gap-y-12 xl:gap-y-16 pt-4 sm:pt-6 items-start">
+						{#each $buses as bus (bus.id)}
+							<BusCard {bus} />
+						{/each}
+					</div>
+				{/if}
 
 			{:else if activeTab === 'avisos'}
-				<!-- ABA 3: AVISOS (Flyers e Pôsteres de Eventos/Editais com Grampos) -->
+				<!-- ABA 3: AVISOS (Flyers e Pôsteres Universitários com Grampos) -->
+
 				{#if filteredNotices.length === 0}
 					<div class="bg-amber-100/90 border-2 border-dashed border-amber-400/80 rounded-lg p-10 text-center max-w-md mx-auto shadow-md">
 						<h3 class="text-base font-bold text-stone-900 mb-1">Nenhum pôster nesta categoria</h3>
@@ -332,16 +457,25 @@
 			<!-- Perfil / Crachá -->
 			<button 
 				type="button" 
-				onclick={() => isProfileDrawerOpen = true}
-				class="flex flex-col items-center gap-0.5 text-[11px] font-bold text-amber-100/60 hover:text-amber-100 transition-colors"
+				onclick={() => isStudentIdCardOpen = true}
+				class="flex flex-col items-center gap-0.5 text-[11px] font-bold text-amber-100/70 hover:text-amber-100 transition-colors cursor-pointer"
+				aria-label="Abrir Crachá e Carteirinha Estudantil"
 			>
-				<Flame class="w-5 h-5 text-amber-500" />
+				<IdCard class="w-5 h-5 text-amber-400" />
 				<span>Crachá</span>
 			</button>
 		</nav>
 
 	</div>
 </div>
+
+<!-- ========================================== -->
+<!-- CARTEIRINHA ESTUDANTIL DA UnB (CRACHÁ POR CIMA) -->
+<!-- ========================================== -->
+<StudentIdCardModal 
+	isOpen={isStudentIdCardOpen}
+	onClose={() => isStudentIdCardOpen = false}
+/>
 
 <!-- ========================================== -->
 <!-- GAVETA LATERAL RETRÁTIL DE MISSÕES & PERFIL-->
@@ -370,7 +504,7 @@
 				<button 
 					type="button" 
 					onclick={() => isProfileDrawerOpen = false}
-					class="p-1 rounded-full text-stone-600 hover:text-stone-900 hover:bg-black/5"
+					class="p-1 rounded-full text-stone-600 hover:text-stone-900 hover:bg-black/5 cursor-pointer"
 				>
 					<X class="w-5 h-5" />
 				</button>

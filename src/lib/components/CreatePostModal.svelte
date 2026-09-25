@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { gameStore } from '$lib/stores/gameStore';
-	import type { CaravanaPost, NoticePost, PinColor, PostPaperColor } from '$lib/types/gamification';
+	import type { CaravanaPost, NoticePost, NoticeCategory, PinColor, PostPaperColor } from '$lib/types/gamification';
 	import Pin from '$lib/components/Pin.svelte';
+	import CockroachIcon from '$lib/components/CockroachIcon.svelte';
 	import { X, Sparkles, Plus, Car, Users, AlertTriangle, Bell } from 'lucide-svelte';
 
 	interface Props {
@@ -13,13 +14,15 @@
 
 	const user = gameStore.user;
 
-	let postCategory = $state<'caravana' | 'squad' | 'reporte' | 'aviso'>('caravana');
+	let postCategory = $state<'caravana' | 'squad' | 'reporte' | 'denuncia' | 'aviso'>('caravana');
 	let title = $state('');
 	let description = $state('');
 	let departureTime = $state('21:45');
 	let origin = $state('Estacionamento UAC');
 	let destination = $state('Metrô Samambaia / DF-480');
-	let noticeCategory = $state<'Edital' | 'Empresas Juniores' | 'Extensão' | 'Eventos' | 'Estágio'>('Edital');
+	let denunciaLocation = $state('Restaurante Universitário • RU FGA');
+	let noticeCategory = $state<NoticeCategory>('Empresas Juniores');
+	let noticeInstagram = $state('');
 	let noticeLink = $state('');
 	let squadRole1 = $state('Software (Fullstack)');
 	let squadRole2 = $state('Aeroespacial (Estruturas)');
@@ -52,18 +55,26 @@
 		const rotation = randomRotations[Math.floor(Math.random() * randomRotations.length)];
 
 		if (postCategory === 'aviso') {
+			const cleanIg = noticeInstagram.trim();
+			const instagramHandle = cleanIg ? (cleanIg.startsWith('@') ? cleanIg : '@' + cleanIg) : undefined;
+			const instagramUrl = instagramHandle ? `https://www.instagram.com/${instagramHandle.replace('@', '')}/` : undefined;
+
 			const newNotice: NoticePost = {
 				id: 'notice-' + Date.now(),
 				title: title.trim(),
 				category: noticeCategory,
-				organizer: $user.name + ' (' + $user.course.replace('Engenharia de ', '') + ')',
+				organizer: instagramHandle || ($user.name + ' (' + $user.course.replace('Engenharia de ', '') + ')'),
 				description: description.trim(),
 				expiresAt: 'Expira em 48h',
 				linkUrl: noticeLink.trim() || undefined,
+				instagramHandle,
+				instagramUrl,
+				sourceType: instagramHandle ? 'instagram' : 'mural',
+				likesCount: instagramHandle ? 1 : undefined,
 				paperColor: selectedColor,
 				pinColor: selectedPin,
 				rotation,
-				tags: [noticeCategory, 'FGA'],
+				tags: [noticeCategory, ...(instagramHandle ? [instagramHandle] : ['FGA'])],
 				createdAt: 'Agora mesmo',
 				isRead: false
 			};
@@ -74,6 +85,9 @@
 				type: postCategory,
 				title: title.trim(),
 				description: description.trim(),
+				location: postCategory === 'denuncia' ? denunciaLocation.trim() : undefined,
+				supportedCount: postCategory === 'denuncia' ? 1 : undefined,
+				userSupported: postCategory === 'denuncia' ? true : undefined,
 				author: {
 					name: $user.name,
 					course: $user.course,
@@ -97,7 +111,7 @@
 					}
 				] : [],
 				maxCapacity: postCategory === 'caravana' ? 5 : undefined,
-				urgency: postCategory === 'reporte' ? 'emergencia' : 'normal',
+				urgency: postCategory === 'reporte' || postCategory === 'denuncia' ? 'emergencia' : 'normal',
 				paperColor: selectedColor,
 				pinColor: selectedPin,
 				rotation,
@@ -164,11 +178,11 @@
 					<span class="block text-xs font-bold text-stone-800 uppercase tracking-wider mb-1.5">
 						O que você quer fixar?
 					</span>
-					<div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+					<div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
 						<button 
 							type="button"
 							onclick={() => { postCategory = 'caravana'; selectedColor = 'yellow'; }}
-							class="flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs font-bold border transition-all {postCategory === 'caravana' ? 'bg-amber-800 text-amber-100 border-amber-900 shadow-xs' : 'bg-white/60 text-stone-800 border-stone-300'}"
+							class="flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs font-bold border transition-all cursor-pointer {postCategory === 'caravana' ? 'bg-amber-800 text-amber-100 border-amber-900 shadow-xs' : 'bg-white/60 text-stone-800 border-stone-300'}"
 						>
 							<Car class="w-4 h-4" />
 							<span>Caravana</span>
@@ -176,7 +190,7 @@
 						<button 
 							type="button"
 							onclick={() => { postCategory = 'squad'; selectedColor = 'white'; }}
-							class="flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs font-bold border transition-all {postCategory === 'squad' ? 'bg-sky-800 text-sky-100 border-sky-900 shadow-xs' : 'bg-white/60 text-stone-800 border-stone-300'}"
+							class="flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs font-bold border transition-all cursor-pointer {postCategory === 'squad' ? 'bg-sky-800 text-sky-100 border-sky-900 shadow-xs' : 'bg-white/60 text-stone-800 border-stone-300'}"
 						>
 							<Users class="w-4 h-4" />
 							<span>Squad PI</span>
@@ -184,15 +198,23 @@
 						<button 
 							type="button"
 							onclick={() => { postCategory = 'reporte'; selectedColor = 'pink'; selectedPin = 'red'; }}
-							class="flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs font-bold border transition-all {postCategory === 'reporte' ? 'bg-rose-800 text-rose-100 border-rose-900 shadow-xs' : 'bg-white/60 text-stone-800 border-stone-300'}"
+							class="flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs font-bold border transition-all cursor-pointer {postCategory === 'reporte' ? 'bg-rose-800 text-rose-100 border-rose-900 shadow-xs' : 'bg-white/60 text-stone-800 border-stone-300'}"
 						>
 							<AlertTriangle class="w-4 h-4" />
 							<span>Alerta</span>
 						</button>
 						<button 
 							type="button"
+							onclick={() => { postCategory = 'denuncia'; selectedColor = 'yellow'; selectedPin = 'red'; }}
+							class="flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs font-bold border transition-all cursor-pointer {postCategory === 'denuncia' ? 'bg-amber-950 text-amber-200 border-stone-900 shadow-xs ring-2 ring-red-600/50' : 'bg-white/60 text-stone-800 border-stone-300'}"
+						>
+							<CockroachIcon size={16} class={postCategory === 'denuncia' ? 'text-amber-300' : 'text-amber-900'} />
+							<span>Denúncia</span>
+						</button>
+						<button 
+							type="button"
 							onclick={() => { postCategory = 'aviso'; selectedColor = 'kraft'; }}
-							class="flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs font-bold border transition-all {postCategory === 'aviso' ? 'bg-amber-950 text-amber-200 border-stone-900 shadow-xs' : 'bg-white/60 text-stone-800 border-stone-300'}"
+							class="flex items-center justify-center gap-1.5 py-2 px-2 rounded text-xs font-bold border transition-all cursor-pointer {postCategory === 'aviso' ? 'bg-amber-950 text-amber-200 border-stone-900 shadow-xs' : 'bg-white/60 text-stone-800 border-stone-300'}"
 						>
 							<Bell class="w-4 h-4" />
 							<span>Aviso</span>
@@ -271,7 +293,7 @@
 						</div>
 					</div>
 				{:else if postCategory === 'aviso'}
-					<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+					<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
 						<div>
 							<label for="post-notice-cat" class="block font-bold text-stone-800 mb-1">Categoria</label>
 							<select 
@@ -279,15 +301,26 @@
 								bind:value={noticeCategory}
 								class="w-full px-2.5 py-1.5 bg-white/80 border border-stone-300 rounded focus:outline-none"
 							>
-								<option value="Edital">Edital</option>
-								<option value="Empresas Juniores">Empresas Juniores</option>
-								<option value="Extensão">Extensão</option>
-								<option value="Eventos">Eventos</option>
-								<option value="Estágio">Estágio</option>
+								<option value="Empresas Juniores">Empresas Juniores (EJs)</option>
+								<option value="Decanatos">Decanatos da UnB</option>
+								<option value="Edital">Edital Oficial</option>
+								<option value="Extensão">Extensão & Workshop</option>
+								<option value="Eventos">Eventos & Integração</option>
+								<option value="Estágio">Vagas & Estágio</option>
 							</select>
 						</div>
 						<div>
-							<label for="post-link" class="block font-bold text-stone-800 mb-1">Link Externo (Opcional)</label>
+							<label for="post-ig" class="block font-bold text-stone-800 mb-1">Instagram (@perfil)</label>
+							<input 
+								id="post-ig"
+								type="text" 
+								bind:value={noticeInstagram}
+								placeholder="@orcestragamificacao"
+								class="w-full px-2.5 py-1.5 bg-white/80 border border-stone-300 rounded focus:outline-none font-mono"
+							/>
+						</div>
+						<div>
+							<label for="post-link" class="block font-bold text-stone-800 mb-1">Link do Post/Edital</label>
 							<input 
 								id="post-link"
 								type="url" 
@@ -295,6 +328,27 @@
 								placeholder="https://..."
 								class="w-full px-2.5 py-1.5 bg-white/80 border border-stone-300 rounded focus:outline-none"
 							/>
+						</div>
+					</div>
+				{:else if postCategory === 'denuncia'}
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+						<div>
+							<label for="post-denuncia-loc" class="block font-bold text-stone-800 mb-1">Local da Ocorrência *</label>
+							<input 
+								id="post-denuncia-loc"
+								type="text" 
+								bind:value={denunciaLocation}
+								placeholder="Ex: Refeitório do RU, Bebedouro do UAC..."
+								class="w-full px-2.5 py-1.5 bg-white/80 border border-stone-300 rounded focus:outline-none focus:ring-1 focus:ring-amber-700"
+								required
+							/>
+						</div>
+						<div>
+							<span class="block font-bold text-stone-800 mb-1">Tipo de Ocorrência</span>
+							<div class="flex items-center gap-1.5 pt-1.5 text-xs text-rose-800 font-bold">
+								<CockroachIcon size={16} class="text-amber-950 shrink-0" />
+								<span>Reporte Comunitário Sanitário</span>
+							</div>
 						</div>
 					</div>
 				{/if}

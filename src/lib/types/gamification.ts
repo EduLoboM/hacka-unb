@@ -39,7 +39,7 @@ export interface Quest {
 	maxProgress: number;
 	isCompleted: boolean;
 	icon: string;
-	category: 'caravana' | 'bus' | 'notice';
+	category: 'caravana' | 'bus' | 'notice' | 'ru';
 }
 
 export interface UserProfile {
@@ -72,11 +72,14 @@ export interface SquadRole {
 	assignedTo?: string;
 }
 
+export type ChamadoType = 'caravana' | 'squad' | 'reporte' | 'denuncia';
+
 export interface CaravanaPost {
 	id: string;
-	type: 'caravana' | 'squad' | 'reporte';
+	type: ChamadoType;
 	title: string;
 	description: string;
+	location?: string;
 	author: {
 		name: string;
 		course: string;
@@ -91,6 +94,8 @@ export interface CaravanaPost {
 	attendees: Attendee[];
 	maxCapacity?: number;
 	urgency?: 'normal' | 'alta' | 'emergencia';
+	supportedCount?: number;
+	userSupported?: boolean;
 	paperColor: PostPaperColor;
 	pinColor: PinColor;
 	rotation: string;
@@ -130,14 +135,21 @@ export interface BusReport {
 	userLastVotedType?: 'passou' | 'atrasado' | 'lotado';
 }
 
+export type NoticeCategory = 'Decanatos' | 'Empresas Juniores' | 'Edital' | 'Extensão' | 'Eventos' | 'Estágio';
+
 export interface NoticePost {
 	id: string;
 	title: string;
-	category: 'Edital' | 'Empresas Juniores' | 'Extensão' | 'Eventos' | 'Estágio';
+	category: NoticeCategory;
 	organizer: string;
 	description: string;
 	expiresAt: string;
 	linkUrl?: string;
+	instagramHandle?: string;
+	instagramUrl?: string;
+	likesCount?: number;
+	verifiedBadge?: boolean;
+	sourceType?: 'instagram' | 'mural' | 'edital';
 	paperColor: PostPaperColor;
 	pinColor: PinColor;
 	rotation: string;
@@ -154,3 +166,63 @@ export interface ToastNotification {
 	type: 'xp' | 'level-up' | 'badge' | 'quest';
 	message?: string;
 }
+
+export type RuQueueStatus = 'vazia' | 'moderada' | 'grande' | 'lotada';
+
+export interface RuQueueVoteReport {
+	id: string;
+	status: RuQueueStatus;
+	timestamp: string;
+	studentName: string;
+	studentCourse?: string;
+	comment?: string;
+	likes?: number;
+}
+
+export interface RuMealMenu {
+	mainDish: string;
+	veganOption: string;
+	garnish: string;
+	sideDishes: string;
+	salad: string;
+	dessert: string;
+	drink: string;
+}
+
+export interface RuDailyMenu {
+	dateStr: string;
+	lunch: RuMealMenu;
+	dinner: RuMealMenu;
+}
+
+export interface RuWeekdayMenu {
+	dayOfWeek: number; // 1 = Seg, 2 = Ter, 3 = Qua, 4 = Qui, 5 = Sex
+	dayName: string;
+	lunch: RuMealMenu;
+	dinner: RuMealMenu;
+}
+
+export interface RuReport {
+	id: string;
+	name: string;
+	campus: string;
+	priceStudent: string;
+	priceVisitor: string;
+	lunchHours: string;
+	dinnerHours: string;
+	currentStatus: RuQueueStatus;
+	estimatedWaitMinutes: number;
+	lastUpdated: string;
+	communityVotes: {
+		vazia: number;
+		moderada: number;
+		grande: number;
+		lotada: number;
+	};
+	recentReports: RuQueueVoteReport[];
+	menu: RuDailyMenu;
+	weeklySchedule?: RuWeekdayMenu[];
+	userLastVotedStatus?: RuQueueStatus;
+	rotation: string;
+}
+

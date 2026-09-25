@@ -143,13 +143,6 @@
 			</div>
 		</div>
 
-		<!-- Dica de Veterano Escrita com Caneta Esferográfica -->
-		{#if bus.studentTip}
-			<div class="font-hand text-base leading-tight text-blue-950 bg-blue-50/80 border-l-3 border-blue-500 px-2.5 py-1.5 rounded-r mb-3 -rotate-0.5 shadow-xs">
-				<span class="font-bold">Malandragem FGA:</span> {bus.studentTip}
-			</div>
-		{/if}
-
 		<!-- Relatos Rápidos dos Alunos -->
 		<div class="mb-3">
 			<span class="text-[10px] font-bold text-stone-600 uppercase tracking-wider block mb-1">

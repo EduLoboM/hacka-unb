@@ -2,6 +2,7 @@
 	import type { CaravanaPost } from '$lib/types/gamification';
 	import Pin from '$lib/components/Pin.svelte';
 	import WashiTape from '$lib/components/WashiTape.svelte';
+	import CockroachIcon from '$lib/components/CockroachIcon.svelte';
 	import { gameStore } from '$lib/stores/gameStore';
 	import { Clock, MapPin, Users, AlertTriangle, ShieldCheck, CheckCircle2, PlusCircle, MessageSquare } from 'lucide-svelte';
 
@@ -23,6 +24,10 @@
 	function handleJoin() {
 		gameStore.joinCaravana(post.id);
 	}
+
+	function handleSupport() {
+		gameStore.supportDenuncia(post.id);
+	}
 </script>
 
 <!-- Post-it Rápido Manuscrito da FGA com Pin Centralizado -->
@@ -35,7 +40,7 @@
 	<!-- Pin Único Centralizado no Topo com Parallax 3D Interativo -->
 	<div class="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
 		<Pin 
-			color={post.urgency === 'emergencia' ? 'red' : post.pinColor} 
+			color={post.type === 'denuncia' ? 'red' : post.urgency === 'emergencia' ? 'red' : post.pinColor} 
 			size="md" 
 		/>
 	</div>
@@ -46,6 +51,11 @@
 			<WashiTape color="amber" rotation="right" text="Caravana 480" />
 		{:else if post.type === 'squad'}
 			<WashiTape color="blue" rotation="right" text="Squad PI" />
+		{:else if post.type === 'denuncia'}
+			<div class="h-7 px-3 backdrop-blur-[1px] bg-red-700 text-white shadow-washi border-x-2 border-dashed border-red-950/40 flex items-center justify-center gap-1.5 font-black text-xs uppercase tracking-wider select-none rotate-2">
+				<CockroachIcon size={14} class="text-amber-300" />
+				<span>DENÚNCIA</span>
+			</div>
 		{:else}
 			<WashiTape color="red" rotation="right" text="Alerta FGA" />
 		{/if}
@@ -75,10 +85,39 @@
 		</div>
 	</header>
 
+	<!-- Ocorrência / Local da Denúncia com Ícone Material de Barata -->
+	{#if post.type === 'denuncia'}
+		<div class="mb-3 p-2 rounded bg-amber-950/8 border border-amber-900/15 flex items-center justify-between gap-2 relative z-2">
+			<div class="flex items-center gap-2 min-w-0">
+				<div class="w-8 h-8 rounded-full bg-amber-950 text-amber-300 flex items-center justify-center shadow-xs shrink-0 ring-2 ring-amber-800/30">
+					<CockroachIcon size={18} class="text-amber-300" />
+				</div>
+				<div class="min-w-0">
+					<span class="text-[9px] font-mono font-black uppercase tracking-wider text-rose-900 block leading-tight">
+						Reporte • Fiscalização FGA
+					</span>
+					{#if post.location}
+						<span class="text-xs font-bold text-stone-900 flex items-center gap-1 truncate">
+							<MapPin class="w-3.5 h-3.5 text-red-700 shrink-0" />
+							<span class="truncate">{post.location}</span>
+						</span>
+					{/if}
+				</div>
+			</div>
+			<span class="px-2 py-0.5 rounded text-[9px] font-mono font-black uppercase bg-red-800 text-white shadow-2xs shrink-0">
+				Ouvidoria
+			</span>
+		</div>
+	{/if}
+
 	<!-- Título com Destaque Manuscrito de Post-it -->
 	<div class="mb-4 relative z-2">
 		<h3 class="text-base font-extrabold text-stone-950 mb-1.5 leading-snug flex items-start gap-1.5">
-			{#if post.urgency === 'emergencia'}
+			{#if post.type === 'denuncia'}
+				<div class="w-5 h-5 rounded-full bg-amber-950/15 text-amber-950 flex items-center justify-center shrink-0 mt-0.5">
+					<CockroachIcon size={15} class="text-amber-950" />
+				</div>
+			{:else if post.urgency === 'emergencia'}
 				<AlertTriangle class="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
 			{/if}
 			<span>{post.title}</span>
@@ -183,7 +222,7 @@
 			<button 
 				type="button" 
 				onclick={handleJoin}
-				class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md font-bold text-xs transition-all duration-150 shadow-xs active:scale-95 {post.userJoined ? 'bg-emerald-700 hover:bg-emerald-800 text-white' : 'bg-amber-800 hover:bg-amber-900 text-amber-50'}"
+				class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md font-bold text-xs transition-all duration-150 shadow-xs active:scale-95 cursor-pointer {post.userJoined ? 'bg-emerald-700 hover:bg-emerald-800 text-white' : 'bg-amber-800 hover:bg-amber-900 text-amber-50'}"
 			>
 				{#if post.userJoined}
 					<CheckCircle2 class="w-4 h-4" />
@@ -197,7 +236,7 @@
 			<button 
 				type="button" 
 				onclick={handleJoin}
-				class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md font-bold text-xs bg-sky-800 hover:bg-sky-900 text-white transition-all shadow-xs active:scale-95"
+				class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md font-bold text-xs bg-sky-800 hover:bg-sky-900 text-white transition-all shadow-xs active:scale-95 cursor-pointer"
 			>
 				{#if post.userJoined}
 					<CheckCircle2 class="w-4 h-4" />
@@ -205,6 +244,20 @@
 				{:else}
 					<Users class="w-4 h-4" />
 					<span>Candidatar-se (+30 XP)</span>
+				{/if}
+			</button>
+		{:else if post.type === 'denuncia'}
+			<button 
+				type="button" 
+				onclick={handleSupport}
+				class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md font-bold text-xs transition-all duration-150 shadow-xs active:scale-95 cursor-pointer {post.userSupported ? 'bg-amber-950 text-amber-100 shadow-inner' : 'bg-red-800 hover:bg-red-900 text-white'}"
+				title="Confirmar ou apoiar denúncia"
+			>
+				<CockroachIcon size={14} class={post.userSupported ? 'text-amber-300' : 'text-amber-200'} />
+				{#if post.userSupported}
+					<span>Confirmado ({post.supportedCount ?? 1})</span>
+				{:else}
+					<span>+1 Eu Vi ({post.supportedCount ?? 0}) • +20 XP</span>
 				{/if}
 			</button>
 		{:else}
