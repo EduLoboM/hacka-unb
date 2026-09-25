@@ -10,7 +10,7 @@
 	import CreatePostModal from '$lib/components/CreatePostModal.svelte';
 	import { 
 		ShieldAlert, 
-		Bus, 
+		Toolbox, 
 		Megaphone, 
 		Plus, 
 		Filter, 
@@ -29,7 +29,7 @@
 	const notices = gameStore.notices;
 
 	// Estados locais com Svelte 5 Runes
-	let activeTab = $state<'chamados' | 'mobilidade' | 'avisos'>('chamados');
+	let activeTab = $state<'chamados' | 'toolbox' | 'avisos'>('chamados');
 	let chamadosFilter = $state<'todos' | 'caravana' | 'squad' | 'reporte'>('todos');
 	let avisosFilter = $state<string>('Todos');
 	let isCreateModalOpen = $state(false);
@@ -66,7 +66,7 @@
 		<!-- ========================================== -->
 		<!-- BARRA SUPERIOR (HEADER NA CORTIÇA)        -->
 		<!-- ========================================== -->
-		<header class="relative z-10 p-3 sm:p-4 md:p-5 border-b-2 border-[#8b5e34]/60 bg-[#996e3d]/30 backdrop-blur-[2px] flex flex-wrap items-center justify-between gap-3 shadow-sm">
+		<header class="relative z-10 px-3 sm:px-5 py-2.5 sm:py-3 border-b-2 border-[#8b5e34]/60 bg-[#996e3d]/30 backdrop-blur-[2px] flex flex-wrap items-center justify-between gap-3 shadow-sm">
 			<!-- Logo / Placa de Metal Universitária -->
 			<div class="flex items-center gap-3">
 				<div class="relative bg-gradient-to-b from-[#dfbb83] via-[#c29656] to-[#8c6027] text-stone-950 px-3.5 py-1.5 rounded-sm border-2 border-[#6d4615] shadow-[0_4px_8px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.5)] flex items-center gap-2">
@@ -86,7 +86,7 @@
 				<button 
 					type="button" 
 					onclick={() => isProfileDrawerOpen = true}
-					class="xl:hidden flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100/90 border border-amber-300 shadow-xs text-xs font-bold text-amber-950"
+					class="sm:hidden flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100/90 border border-amber-300 shadow-xs text-xs font-bold text-amber-950"
 					aria-label="Abrir Perfil e Missões"
 				>
 					<img src={$user.avatarUrl} alt="" class="w-5 h-5 rounded-full object-cover" />
@@ -111,12 +111,12 @@
 
 				<button 
 					type="button" 
-					onclick={() => activeTab = 'mobilidade'}
-					class="relative px-4 py-1.5 font-bold text-xs sm:text-sm uppercase tracking-wider rounded-sm transition-all duration-150 flex items-center gap-1.5 select-none active:scale-95 {activeTab === 'mobilidade' ? 'bg-sky-100 text-stone-900 shadow-md border-b-3 border-sky-500 rotate-1 font-extrabold scale-105' : 'bg-stone-900/40 text-amber-100/90 hover:bg-stone-900/60'}"
+					onclick={() => activeTab = 'toolbox'}
+					class="relative px-4 py-1.5 font-bold text-xs sm:text-sm uppercase tracking-wider rounded-sm transition-all duration-150 flex items-center gap-1.5 select-none active:scale-95 {activeTab === 'toolbox' ? 'bg-sky-100 text-stone-900 shadow-md border-b-3 border-sky-500 rotate-1 font-extrabold scale-105' : 'bg-stone-900/40 text-amber-100/90 hover:bg-stone-900/60'}"
 				>
-					<Bus class="w-4 h-4 text-sky-700" />
-					<span>Mobilidade</span>
-					<span class="text-[10px] px-1.5 py-0.2 rounded-full {activeTab === 'mobilidade' ? 'bg-sky-800 text-sky-100' : 'bg-white/20 text-white'}">
+					<Toolbox class="w-4 h-4 text-sky-700" />
+					<span>Toolbox</span>
+					<span class="text-[10px] px-1.5 py-0.2 rounded-full {activeTab === 'toolbox' ? 'bg-sky-800 text-sky-100' : 'bg-white/20 text-white'}">
 						{busesCount}
 					</span>
 				</button>
@@ -135,9 +135,9 @@
 			</nav>
 
 			<!-- Ações da Direita: Crachá Estudantil UnB, Áudio e Botão Novo Post-it -->
-			<div class="flex items-center gap-3">
-				<!-- Carteirinha Estudantil da UnB (Crachá Compacto não invasivo no Desktop) -->
-				<div class="hidden xl:block">
+			<div class="flex items-center gap-2.5">
+				<!-- Carteirinha Estudantil da UnB (Crachá Compacto não invasivo no Header) -->
+				<div class="hidden sm:block">
 					<StudentBadge onOpenQuests={() => isProfileDrawerOpen = true} />
 				</div>
 
@@ -205,7 +205,7 @@
 						Alertas
 					</button>
 
-				{:else if activeTab === 'mobilidade'}
+				{:else if activeTab === 'toolbox'}
 					<span class="text-xs text-amber-200/90 font-medium italic">
 						Tíquetes e Painéis Oficiais da SEMOB-DF com validações comunitárias da FGA
 					</span>
@@ -260,9 +260,9 @@
 					</div>
 				{/if}
 
-			{:else if activeTab === 'mobilidade'}
-				<!-- ABA 2: MOBILIDADE (Tíquetes de Ônibus com Picote e Fita Durex) -->
-				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-start">
+			{:else if activeTab === 'toolbox'}
+				<!-- ABA 2: TOOLBOX (Tíquetes de Ônibus com Picote e Fita Durex) -->
+				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 xl:gap-x-14 gap-y-12 xl:gap-y-16 pt-4 sm:pt-6 items-start">
 					{#each $buses as bus (bus.id)}
 						<BusCard {bus} />
 					{/each}
@@ -299,14 +299,14 @@
 				<span>Post-its</span>
 			</button>
 
-			<!-- Mobilidade -->
+			<!-- Toolbox -->
 			<button 
 				type="button" 
-				onclick={() => activeTab = 'mobilidade'}
-				class="flex flex-col items-center gap-0.5 text-[11px] font-bold transition-colors {activeTab === 'mobilidade' ? 'text-sky-300' : 'text-amber-100/60 hover:text-amber-100'}"
+				onclick={() => activeTab = 'toolbox'}
+				class="flex flex-col items-center gap-0.5 text-[11px] font-bold transition-colors {activeTab === 'toolbox' ? 'text-sky-300' : 'text-amber-100/60 hover:text-amber-100'}"
 			>
-				<Bus class="w-5 h-5" />
-				<span>Tíquetes</span>
+				<Toolbox class="w-5 h-5" />
+				<span>Toolbox</span>
 			</button>
 
 			<!-- Botão Central Flutuante: Fixar Post-it -->
