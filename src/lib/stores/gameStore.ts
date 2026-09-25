@@ -272,6 +272,388 @@ export const INITIAL_CARAVANAS: CaravanaPost[] = [
 		pinColor: 'red',
 		rotation: 'rot-p-1',
 		createdAt: 'Há 50 min'
+	},
+
+	// ==========================================
+	// 👥 SQUADS PROJETO INTEGRADOR (PI-1 / PI-2)
+	// ==========================================
+	{
+		id: 'c7',
+		type: 'squad',
+		title: 'Squad PI-1: Estação de Monitoramento da Qualidade do Ar com IoT',
+		description: 'Projeto interdisciplinar aprovado! Já contamos com 2 de Eletrônica e 1 de Energia. Precisamos urgente de 1 aluno de Engenharia de Software (App Mobile Flutter / Backend Python) e 1 de Aeroespacial para gabinete aerodinâmico.',
+		author: {
+			name: 'Bruno Alcântara',
+			course: 'Engenharia Eletrônica',
+			karma: 88,
+			level: 9,
+			avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&auto=format&fit=crop&q=80'
+		},
+		origin: 'LabMaker • Bancada 4',
+		destination: 'Apresentação Final PI-1',
+		requiredRoles: [
+			{ role: 'App Mobile Flutter/FastAPI', course: 'Software', filled: false },
+			{ role: 'Gabinete Aerodinâmico CAD', course: 'Aeroespacial', filled: false },
+			{ role: 'Circuito Sensores MQ-135', course: 'Eletrônica', filled: true, assignedTo: 'Bruno A.' },
+			{ role: 'Alimentação Fotovoltaica', course: 'Energia', filled: true, assignedTo: 'Renata M.' }
+		],
+		attendees: [
+			{ id: 'b1', name: 'Bruno', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100', course: 'Eletrônica' },
+			{ id: 'b2', name: 'Renata', avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100', course: 'Energia' }
+		],
+		urgency: 'alta',
+		paperColor: 'white',
+		pinColor: 'gold',
+		rotation: 'rot-n-1',
+		createdAt: 'Há 35 min',
+		commentsCount: 8,
+		userJoined: false
+	},
+	{
+		id: 'c8',
+		type: 'squad',
+		title: 'Squad PI-2: Veículo Elétrico Autônomo com Navegação por LiDAR',
+		description: 'Desenvolvimento do protótipo no galpão automotivo. Procuramos 1 estudante de Engenharia Automotiva (direção steer-by-wire) e 1 de Software (ROS2 / SLAM / C++). Orientador já definido!',
+		author: {
+			name: 'Larissa Menezes',
+			course: 'Engenharia de Software',
+			karma: 104,
+			level: 11,
+			avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&auto=format&fit=crop&q=80'
+		},
+		origin: 'Galpão de Projetos FGA',
+		destination: 'Pista de Testes FGA',
+		requiredRoles: [
+			{ role: 'Direção Steer-by-Wire & Freios', course: 'Automotiva', filled: false },
+			{ role: 'Algoritmos SLAM & ROS2', course: 'Software', filled: false },
+			{ role: 'Arquitetura de Controle & C++', course: 'Software', filled: true, assignedTo: 'Larissa M.' },
+			{ role: 'Bancada Baterias LiFePO4', course: 'Energia', filled: true, assignedTo: 'Guilherme S.' }
+		],
+		attendees: [
+			{ id: 'l1', name: 'Larissa', avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100', course: 'Software' },
+			{ id: 'l2', name: 'Guilherme', avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100', course: 'Energia' }
+		],
+		urgency: 'alta',
+		paperColor: 'blue',
+		pinColor: 'silver',
+		rotation: 'rot-p-2',
+		createdAt: 'Há 1h',
+		commentsCount: 11,
+		userJoined: false
+	},
+	{
+		id: 'c9',
+		type: 'squad',
+		title: 'Squad PI-1: Exoesqueleto de Membro Superior para Fisioterapia',
+		description: 'Projeto de reabilitação motora. Buscamos 1 aluno de Engenharia Eletrônica (Filtro ativo EMG / Arduino) e 1 de Automotiva/Mecânica (articulações e materiais compósitos leves). Reuniões semanais no LabMaker.',
+		author: {
+			name: 'Thiago Vasconcelos',
+			course: 'Engenharia de Software',
+			karma: 79,
+			level: 8,
+			avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120&auto=format&fit=crop&q=80'
+		},
+		origin: 'LabMaker FGA',
+		destination: 'Demonstração Prática PI-1',
+		requiredRoles: [
+			{ role: 'Sensoriamento Mioelétrico EMG', course: 'Eletrônica', filled: false },
+			{ role: 'Mecanismos & Articulações 3D', course: 'Automotiva', filled: false },
+			{ role: 'Software de Calibração & UI', course: 'Software', filled: true, assignedTo: 'Thiago V.' }
+		],
+		attendees: [
+			{ id: 'tv1', name: 'Thiago', avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100', course: 'Software' }
+		],
+		urgency: 'normal',
+		paperColor: 'yellow',
+		pinColor: 'emerald',
+		rotation: 'rot-n-2',
+		createdAt: 'Há 2h',
+		commentsCount: 5,
+		userJoined: false
+	},
+	{
+		id: 'c10',
+		type: 'squad',
+		title: 'Squad PI-2: Sistema Microgrid Híbrido Solar-Eólico com Telemetria',
+		description: 'Procuramos 1 Engenheiro de Software (Dashboard web em tempo real / WebSocket) e 1 de Eletrônica (Inversor CC-CA e MPPT). Bancada de testes montada no galpão de energia da FGA.',
+		author: {
+			name: 'Camila Torres',
+			course: 'Engenharia de Energia',
+			karma: 98,
+			level: 10,
+			avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&auto=format&fit=crop&q=80'
+		},
+		origin: 'Galpão de Energia FGA',
+		destination: 'Subestação Experimental FGA',
+		requiredRoles: [
+			{ role: 'Dashboard Web WebSockets', course: 'Software', filled: false },
+			{ role: 'Controle de Carga MPPT', course: 'Eletrônica', filled: false },
+			{ role: 'Dimensionamento Microgrid', course: 'Energia', filled: true, assignedTo: 'Camila T.' },
+			{ role: 'Turbina Savonius CFD', course: 'Aeroespacial', filled: true, assignedTo: 'Matheus B.' }
+		],
+		attendees: [
+			{ id: 'ct1', name: 'Camila', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100', course: 'Energia' },
+			{ id: 'ct2', name: 'Matheus', avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=100', course: 'Aeroespacial' }
+		],
+		urgency: 'normal',
+		paperColor: 'kraft',
+		pinColor: 'blue',
+		rotation: 'rot-p-1',
+		createdAt: 'Há 3h',
+		commentsCount: 6,
+		userJoined: false
+	},
+
+	// ==========================================
+	// 🚗 CARAVANAS DE MOBILIDADE (480 / METRÔ / BRT)
+	// ==========================================
+	{
+		id: 'c11',
+		type: 'caravana',
+		title: 'Caravana Ceilândia Centro ➔ Saída do UAC às 22h00',
+		description: 'Galera que mora em Ceilândia e arredores: saída às 22h00 do estacionamento. Vamos via DF-480 e Samambaia. Temos 2 vagas de carona compartilhada rachando gasolina!',
+		author: {
+			name: 'Rodrigo Silveira',
+			course: 'Engenharia Automotiva',
+			karma: 62,
+			level: 6,
+			avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=120&auto=format&fit=crop&q=80'
+		},
+		departureTime: '22:00',
+		origin: 'Estacionamento UAC',
+		destination: 'Ceilândia Centro (Metrô / HRC)',
+		attendees: [
+			{ id: 'rs1', name: 'Rodrigo', avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=100', course: 'Automotiva' },
+			{ id: 'rs2', name: 'Vanessa', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100', course: 'Software' }
+		],
+		maxCapacity: 4,
+		urgency: 'alta',
+		paperColor: 'yellow',
+		pinColor: 'gold',
+		rotation: 'rot-p-2',
+		createdAt: 'Há 20 min',
+		commentsCount: 5,
+		userJoined: false
+	},
+	{
+		id: 'c12',
+		type: 'caravana',
+		title: 'Carona Solidária Matutina: Águas Claras ➔ FGA (Aulas das 08h)',
+		description: 'Passo na Estação Águas Claras às 07h15 e sigo pelo Pistão Sul direto pro Campus Gama. 3 vagas disponíveis no carro. Quem tiver interesse responde aqui!',
+		author: {
+			name: 'Carolina Mendes',
+			course: 'Engenharia Aeroespacial',
+			karma: 77,
+			level: 8,
+			avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=120&auto=format&fit=crop&q=80'
+		},
+		departureTime: '07:15',
+		origin: 'Estação Águas Claras (Metrô)',
+		destination: 'Campus UnB Gama (UAC)',
+		attendees: [
+			{ id: 'cm1', name: 'Carolina', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100', course: 'Aeroespacial' }
+		],
+		maxCapacity: 4,
+		urgency: 'normal',
+		paperColor: 'kraft',
+		pinColor: 'emerald',
+		rotation: 'rot-n-1',
+		createdAt: 'Há 1h',
+		commentsCount: 4,
+		userJoined: false
+	},
+	{
+		id: 'c13',
+		type: 'caravana',
+		title: 'Caravana Noturna da Sexta: FGA ➔ Rodoviária do Plano Piloto',
+		description: 'Fechando a semana de provas: saída coletiva para o BRT 2201 às 17h40. Vamos em grupo grande pela passarela da DF-480 para garantir a segurança de todos.',
+		author: {
+			name: 'Arthur Nogueira',
+			course: 'Engenharia de Software',
+			karma: 53,
+			level: 5,
+			avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=120&auto=format&fit=crop&q=80'
+		},
+		departureTime: '17:40',
+		origin: 'Hall de Entrada do UAC',
+		destination: 'Rodoviária do Plano Piloto (via BRT)',
+		attendees: [
+			{ id: 'an1', name: 'Arthur', avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=100', course: 'Software' },
+			{ id: 'an2', name: 'Clara', avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100', course: 'Eletrônica' },
+			{ id: 'an3', name: 'Pedro', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100', course: 'Energia' }
+		],
+		maxCapacity: 10,
+		urgency: 'normal',
+		paperColor: 'white',
+		pinColor: 'blue',
+		rotation: 'rot-p-1',
+		createdAt: 'Há 40 min',
+		commentsCount: 7,
+		userJoined: false
+	},
+	{
+		id: 'c14',
+		type: 'caravana',
+		title: 'Caravana Almoço Rápido: Gama Shopping / McDonald’s',
+		description: 'Saindo às 12h10 para almoçar no shopping do Gama e voltar antes da aula de Física das 14h. Carona com 3 vagas liberadas.',
+		author: {
+			name: 'Vinícius Ramos',
+			course: 'Engenharia Eletrônica',
+			karma: 41,
+			level: 4,
+			avatar: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=120&auto=format&fit=crop&q=80'
+		},
+		departureTime: '12:10',
+		origin: 'Bancos de Madeira do UAC',
+		destination: 'Gama Shopping / Setor Central',
+		attendees: [
+			{ id: 'vr1', name: 'Vinícius', avatar: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=100', course: 'Eletrônica' }
+		],
+		maxCapacity: 4,
+		urgency: 'normal',
+		paperColor: 'yellow',
+		pinColor: 'gold',
+		rotation: 'rot-n-2',
+		createdAt: 'Há 15 min',
+		commentsCount: 2,
+		userJoined: false
+	},
+
+	// ==========================================
+	// 🪳 DENÚNCIAS SANITÁRIAS & FISCALIZAÇÃO FGA
+	// ==========================================
+	{
+		id: 'c15',
+		type: 'denuncia',
+		title: '🪳 Ninho de baratas nos armários de estudos da Biblioteca FGA',
+		description: 'Encontradas baratas francesinhas dentro das frestas dos armários de aço do mezanino da biblioteca. Vários livros e mochilas de estudantes já foram infestados. Dedetização urgente necessária!',
+		location: 'Biblioteca da FGA • Mezanino / Armários de Aço',
+		author: {
+			name: 'Júlia Medeiros',
+			course: 'Engenharia Aeroespacial',
+			karma: 89,
+			level: 9,
+			avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'
+		},
+		urgency: 'emergencia',
+		supportedCount: 89,
+		commentsCount: 42,
+		attendees: [],
+		paperColor: 'yellow',
+		pinColor: 'red',
+		rotation: 'rot-n-1',
+		createdAt: 'Há 1h'
+	},
+	{
+		id: 'c16',
+		type: 'denuncia',
+		title: '🪳 Baratas no ralo do banheiro masculino próximo ao LabMaker',
+		description: 'Falta de tela de proteção nos ralos do térreo do Bloco B. Ao ligar a luz à noite, baratas saem em grande quantidade. Requer intervenção imediata da Prefeitura do Campus.',
+		location: 'Bloco B • Banheiro Térreo ao lado do LabMaker',
+		author: {
+			name: 'Mateus Henrique',
+			course: 'Engenharia Automotiva',
+			karma: 71,
+			level: 7,
+			avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100'
+		},
+		urgency: 'alta',
+		supportedCount: 63,
+		commentsCount: 27,
+		attendees: [],
+		paperColor: 'kraft',
+		pinColor: 'red',
+		rotation: 'rot-p-2',
+		createdAt: 'Há 1h 30min'
+	},
+	{
+		id: 'c17',
+		type: 'denuncia',
+		title: '🪳 Baratas nas máquinas automáticas de café e snacks do UAC',
+		description: 'Atrás da grade de ventilação das máquinas de salgadinhos da entrada do UAC foi avistada presença recorrente de baratas. Risco sanitário direto para quem consome alimentos no local.',
+		location: 'UAC • Hall Principal / Máquinas de Vending',
+		author: {
+			name: 'Fernanda Castro',
+			course: 'Engenharia de Software',
+			karma: 112,
+			level: 11,
+			avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100'
+		},
+		urgency: 'emergencia',
+		supportedCount: 112,
+		commentsCount: 58,
+		attendees: [],
+		paperColor: 'white',
+		pinColor: 'red',
+		rotation: 'rot-n-2',
+		createdAt: 'Há 2h'
+	},
+
+	// ==========================================
+	// ⚠️ ALERTAS COMUNITÁRIOS & INFRAESTRUTURA
+	// ==========================================
+	{
+		id: 'c18',
+		type: 'reporte',
+		title: '⚠️ Aquaplanagem e poça gigante na curva da DF-480',
+		description: 'Chuva forte abriu uma poça d’água perigosa na pista sentido Gama-Plano, logo após o viaduto da FGA. Motoristas e vans estudantis devem redobrar a atenção e diminuir a velocidade!',
+		author: {
+			name: 'Caio Diniz',
+			course: 'Engenharia Automotiva',
+			karma: 65,
+			level: 6,
+			avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120&auto=format&fit=crop&q=80'
+		},
+		urgency: 'emergencia',
+		attendees: [],
+		paperColor: 'pink',
+		pinColor: 'red',
+		rotation: 'rot-p-1',
+		createdAt: 'Há 15 min',
+		commentsCount: 14,
+		userJoined: false
+	},
+	{
+		id: 'c19',
+		type: 'reporte',
+		title: '⚠️ Ar-condicionado sem funcionar no Auditório Principal',
+		description: 'Calor excessivo durante as palestras e bancas de hoje no auditório do térreo. Já são 3 dias com o compressor desarmando. Protocolo aberto no atendimento da prefeitura do campus.',
+		author: {
+			name: 'Priscila Fontes',
+			course: 'Engenharia de Energia',
+			karma: 58,
+			level: 5,
+			avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&auto=format&fit=crop&q=80'
+		},
+		urgency: 'normal',
+		attendees: [],
+		paperColor: 'pink',
+		pinColor: 'purple',
+		rotation: 'rot-n-1',
+		createdAt: 'Há 45 min',
+		commentsCount: 8,
+		userJoined: false
+	},
+	{
+		id: 'c20',
+		type: 'reporte',
+		title: '⚠️ Queda de disjuntor nos laboratórios de computação (Lab 2 e 4)',
+		description: 'Oscilação na rede elétrica desligou vários computadores de simulação. Lembrem-se de dar git push e salvar seus projetos com frequência para não perder arquivos locais!',
+		author: {
+			name: 'Rafael Costa',
+			course: 'Engenharia de Software',
+			karma: 120,
+			level: 12,
+			avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&auto=format&fit=crop&q=80'
+		},
+		urgency: 'alta',
+		attendees: [],
+		paperColor: 'pink',
+		pinColor: 'red',
+		rotation: 'rot-p-2',
+		createdAt: 'Há 50 min',
+		commentsCount: 16,
+		userJoined: false
 	}
 ];
 
@@ -1147,7 +1529,7 @@ function createGameStore() {
 
 	function getInitialCaravanas(): CaravanaPost[] {
 		if (typeof window === 'undefined') return INITIAL_CARAVANAS;
-		const stored = localStorage.getItem('hubfga_caravanas_v2') || localStorage.getItem('hubfga_caravanas');
+		const stored = localStorage.getItem('hubfga_caravanas_v3') || localStorage.getItem('hubfga_caravanas_v2') || localStorage.getItem('hubfga_caravanas');
 		if (!stored) return INITIAL_CARAVANAS;
 		try {
 			const parsed: CaravanaPost[] = JSON.parse(stored);
