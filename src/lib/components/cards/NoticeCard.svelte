@@ -164,21 +164,21 @@
 						href={notice.instagramUrl || `https://www.instagram.com/${notice.instagramHandle?.replace('@', '')}/`} 
 						target="_blank" 
 						rel="noreferrer"
-						class="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded text-white bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] hover:brightness-105 active:scale-95 shadow-xs transition-all"
+						class="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded text-stone-950 bg-gradient-to-r from-amber-200 via-rose-200 to-amber-100 hover:from-amber-300 hover:to-rose-300 border border-stone-400/80 active:scale-95 shadow-xs transition-all"
 					>
-						<InstagramIcon size={12} class="text-white" />
+						<InstagramIcon size={12} class="text-stone-950" />
 						<span>Ver no Instagram</span>
-						<ExternalLink class="w-3 h-3 opacity-80" />
+						<ExternalLink class="w-3 h-3 text-stone-950 opacity-80" />
 					</a>
 				{:else if notice.linkUrl}
 					<a 
 						href={notice.linkUrl} 
 						target="_blank" 
 						rel="noreferrer"
-						class="inline-flex items-center gap-1 text-xs font-bold text-amber-900 hover:text-amber-950 hover:underline"
+						class="inline-flex items-center gap-1 text-xs font-bold text-stone-950 hover:underline"
 					>
 						<span>Acessar Link</span>
-						<ExternalLink class="w-3.5 h-3.5" />
+						<ExternalLink class="w-3.5 h-3.5 text-stone-950" />
 					</a>
 				{/if}
 			</div>
@@ -186,11 +186,11 @@
 			<button 
 				type="button" 
 				onclick={handleMarkAsRead}
-				class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded font-bold text-xs transition-all cursor-pointer {notice.isRead ? 'bg-emerald-700 text-white' : 'bg-stone-900 hover:bg-stone-800 text-white active:scale-95 shadow-xs'}"
+				class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded font-bold text-xs transition-all cursor-pointer text-stone-950 border {notice.isRead ? 'bg-emerald-300 border-emerald-600' : 'bg-amber-300 hover:bg-amber-400 border-amber-600 active:scale-95 shadow-xs'}"
 				disabled={notice.isRead}
 			>
 				{#if notice.isRead}
-					<CheckCheck class="w-3.5 h-3.5" />
+					<CheckCheck class="w-3.5 h-3.5 text-emerald-950" />
 					<span>Lido (+10 XP)</span>
 				{:else}
 					<span>Marcar Lido (+10 XP)</span>

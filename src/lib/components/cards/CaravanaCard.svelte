@@ -52,8 +52,8 @@
 		{:else if post.type === 'squad'}
 			<WashiTape color="blue" rotation="right" text="Squad PI" />
 		{:else if post.type === 'denuncia'}
-			<div class="h-7 px-3 backdrop-blur-[1px] bg-red-700 text-white shadow-washi border-x-2 border-dashed border-red-950/40 flex items-center justify-center gap-1.5 font-black text-xs uppercase tracking-wider select-none rotate-2">
-				<CockroachIcon size={14} class="text-amber-300" />
+			<div class="h-7 px-3 backdrop-blur-[1px] bg-red-400 text-stone-950 shadow-washi border-x-2 border-dashed border-red-950/40 flex items-center justify-center gap-1.5 font-black text-xs uppercase tracking-wider select-none rotate-2">
+				<CockroachIcon size={14} class="text-stone-950" />
 				<span>DENÚNCIA</span>
 			</div>
 		{:else}
@@ -104,7 +104,7 @@
 					{/if}
 				</div>
 			</div>
-			<span class="px-2 py-0.5 rounded text-[9px] font-mono font-black uppercase bg-red-800 text-white shadow-2xs shrink-0">
+			<span class="px-2 py-0.5 rounded text-[9px] font-mono font-black uppercase bg-red-200 text-stone-950 border border-red-400 shadow-2xs shrink-0">
 				Ouvidoria
 			</span>
 		</div>
@@ -222,13 +222,13 @@
 			<button 
 				type="button" 
 				onclick={handleJoin}
-				class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md font-bold text-xs transition-all duration-150 shadow-xs active:scale-95 cursor-pointer {post.userJoined ? 'bg-emerald-700 hover:bg-emerald-800 text-white' : 'bg-amber-800 hover:bg-amber-900 text-amber-50'}"
+				class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md font-bold text-xs transition-all duration-150 shadow-xs active:scale-95 cursor-pointer text-stone-950 {post.userJoined ? 'bg-emerald-300 hover:bg-emerald-400 border border-emerald-600' : 'bg-amber-300 hover:bg-amber-400 border border-amber-600'}"
 			>
 				{#if post.userJoined}
-					<CheckCircle2 class="w-4 h-4" />
+					<CheckCircle2 class="w-4 h-4 text-emerald-950" />
 					<span>Confirmado!</span>
 				{:else}
-					<PlusCircle class="w-4 h-4" />
+					<PlusCircle class="w-4 h-4 text-stone-950" />
 					<span>+1 Vou Junto (+30 XP)</span>
 				{/if}
 			</button>
@@ -236,13 +236,13 @@
 			<button 
 				type="button" 
 				onclick={handleJoin}
-				class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md font-bold text-xs bg-sky-800 hover:bg-sky-900 text-white transition-all shadow-xs active:scale-95 cursor-pointer"
+				class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md font-bold text-xs transition-all shadow-xs active:scale-95 cursor-pointer text-stone-950 border {post.userJoined ? 'bg-emerald-300 hover:bg-emerald-400 border-emerald-600' : 'bg-sky-200 hover:bg-sky-300 border-sky-400'}"
 			>
 				{#if post.userJoined}
-					<CheckCircle2 class="w-4 h-4" />
+					<CheckCircle2 class="w-4 h-4 text-emerald-950" />
 					<span>Interesse Enviado!</span>
 				{:else}
-					<Users class="w-4 h-4" />
+					<Users class="w-4 h-4 text-stone-950" />
 					<span>Candidatar-se (+30 XP)</span>
 				{/if}
 			</button>
@@ -250,10 +250,10 @@
 			<button 
 				type="button" 
 				onclick={handleSupport}
-				class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md font-bold text-xs transition-all duration-150 shadow-xs active:scale-95 cursor-pointer {post.userSupported ? 'bg-amber-950 text-amber-100 shadow-inner' : 'bg-red-800 hover:bg-red-900 text-white'}"
+				class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md font-bold text-xs transition-all duration-150 shadow-xs active:scale-95 cursor-pointer text-stone-950 border {post.userSupported ? 'bg-amber-200 border-amber-600 shadow-inner' : 'bg-rose-200 hover:bg-rose-300 border-rose-400'}"
 				title="Confirmar ou apoiar denúncia"
 			>
-				<CockroachIcon size={14} class={post.userSupported ? 'text-amber-300' : 'text-amber-200'} />
+				<CockroachIcon size={14} class="text-stone-950" />
 				{#if post.userSupported}
 					<span>Confirmado ({post.supportedCount ?? 1})</span>
 				{:else}
